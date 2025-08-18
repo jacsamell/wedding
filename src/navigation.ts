@@ -21,23 +21,52 @@ export function initNavigation(): void {
 
     let lastScroll = 0;
     let isMenuOpen = false;
+    let scrollTimeout: number;
 
     const handleScroll = throttle(() => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const hero = $('.hero');
-        const heroHeight = hero?.offsetHeight || 600;
-
-        elements.nav!.classList.toggle('visible', scrollTop > heroHeight - 100);
-
-        if (scrollTop > lastScroll && scrollTop > heroHeight) {
-            elements.nav!.style.transform = 'translateY(-100%)';
-        } else if (elements.nav!.classList.contains('visible')) {
-            elements.nav!.style.transform = 'translateY(0)';
+        
+        // Hide nav when at the very top
+        if (scrollTop < 50) {
+            elements.nav!.classList.remove('visible');
+            elements.nav!.style.transform = 'translateY(0)'; // Reset transform when hidden by opacity
+        } else {
+            elements.nav!.classList.add('visible');
+            
+            // Only handle scroll direction hiding when nav is visible
+            if (scrollTop > lastScroll && scrollTop > 300) {
+                elements.nav!.style.transform = 'translateY(-100%)';
+            } else {
+                elements.nav!.style.transform = 'translateY(0)';
+            }
         }
 
         lastScroll = scrollTop;
         updateActiveSection(scrollTop);
-    }, 100);
+    }, 50); // Reduced throttle time for better responsiveness
+
+    // Handle scroll end to ensure nav state is correct after fast scrolling
+    function handleScrollEnd(): void {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop < 50) {
+            elements.nav!.classList.remove('visible');
+            elements.nav!.style.transform = 'translateY(0)';
+        } else {
+            elements.nav!.classList.add('visible');
+            elements.nav!.style.transform = 'translateY(0)';
+        }
+    }
+
+    function onScroll(): void {
+        handleScroll();
+        
+        // Clear previous timeout
+        clearTimeout(scrollTimeout);
+        
+        // Set new timeout for scroll end detection
+        scrollTimeout = window.setTimeout(handleScrollEnd, 150);
+    }
 
     function updateActiveSection(scrollY: number): void {
         elements.sections.forEach(section => {
@@ -83,8 +112,8 @@ export function initNavigation(): void {
         link.addEventListener('click', () => toggleMenu(false));
     });
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Don't call handleScroll on init - let nav start hidden
 }
 
 

@@ -356,9 +356,16 @@
 
 /* Countdown Section */
 .countdown-section {
-  background: var(--cream);
+  background: linear-gradient(
+    to bottom,
+    rgba(251, 248, 240, 0.50) 0%,
+    rgba(251, 248, 240, 0.8) 50%,
+    rgba(251, 248, 240, 0.9) 100%
+  );
   text-align: center;
   padding: var(--spacing-3xl) 0;
+  position: relative;
+  backdrop-filter: blur(2px);
 }
 
 .countdown-grid {
@@ -372,10 +379,14 @@
 }
 
 .time-box {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
   padding: var(--spacing-2xl);
   border-radius: 12px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 
+    var(--shadow-md),
+    inset 0 0 20px rgba(201, 169, 97, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(201, 169, 97, 0.1);
 }
 
 .time-value {
@@ -406,6 +417,7 @@
   
   .time-box {
     padding: var(--spacing-lg);
+    margin: 0;
   }
   
   .time-value {
@@ -425,7 +437,7 @@
   
   .countdown-grid {
     gap: var(--spacing-sm);
-    padding: 0 var(--spacing-sm);
+    padding: 0 var(--spacing-lg);
   }
   
   .time-box {
@@ -960,13 +972,17 @@
 .rsvp-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
   transition: transform 0.4s ease;
+  width: 100%;
+  margin-top: var(--spacing-lg);
 }
 
 .add-guest-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-sm);
   padding: 1rem 2rem;
   font-family: var(--font-sans);
@@ -1268,7 +1284,6 @@
 .spotify-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 var(--spacing-lg);
   position: relative;
   z-index: 1;
 }
@@ -1528,7 +1543,6 @@
   font-family: var(--font-sans);
   font-size: 0.875rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  white-space: nowrap;
 }
 
 .success-message {
@@ -1817,22 +1831,59 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* Grid Layouts */
     .details-grid,
     .menu-items,
     .info-grid {
         grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
     }
     
+    .info-grid {
+        margin-top: 0;
+    }
+    
+    .info-card {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    /* Navigation */
     .nav-brand {
-        align-items: center;
+        align-items: flex-start;
     }
     
     .brand-text {
         font-size: 1.25rem;
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
     .nav-countdown {
         font-size: 0.7rem;
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    /* General Button Sizing for Touch */
+    button {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+    
+    /* Form Elements */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+    
+    /* Section Titles */
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-lg);
     }
     
     .spotify-iframe-wrapper {
@@ -1862,11 +1913,9 @@
     
     /* Song Request Section Mobile Styles */
     .song-request-section {
-        padding: var(--spacing-lg);
-        margin: 0 -var(--spacing-md);
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin: 0 var(--spacing-sm);
+        border-radius: 12px;
     }
     
     .song-search-container {
@@ -1959,10 +2008,13 @@
     
     .request-message {
         bottom: 10px;
-        left: var(--spacing-md);
-        right: var(--spacing-md);
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
         max-width: calc(100% - var(--spacing-xl));
-        transform: translateX(0) translateY(-10px);
+    }
+    
+    .request-message.show {
+        transform: translateX(-50%) translateY(0);
     }
     
     .success-message,
@@ -1970,12 +2022,172 @@
         padding: var(--spacing-sm) var(--spacing-md);
         font-size: 0.85rem;
         border-radius: 30px;
-        max-width: 100%;
+        white-space: normal;
+        word-break: break-word;
+        text-align: center;
     }
     
     .success-message svg,
     .error-message svg {
         width: 16px;
         height: 16px;
+    }
+}
+
+/* Tablet Optimizations */
+@media (max-width: 1024px) {
+    /* Hero Section */
+    .hero {
+        align-items: flex-start;
+        padding-top: 25vh;
+    }
+    
+    .hero-content {
+        margin-top: 0;
+    }
+}
+
+/* Additional Mobile Optimizations */
+@media (max-width: 768px) {
+    /* Hero Section */
+    .hero {
+        padding: var(--spacing-2xl) 0;
+        min-height: 100vh;
+        align-items: flex-start;
+        padding-top: 25vh;
+    }
+    
+    .hero-content {
+        margin-top: 0;
+    }
+    
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: var(--spacing-md);
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: var(--spacing-lg);
+        padding: 0 var(--spacing-md);
+    }
+    
+    .hero-date {
+        font-size: 1.25rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    /* RSVP Form */
+    .rsvp-container {
+        padding: 0;
+    }
+    
+    .rsvp-form {
+        padding: var(--spacing-lg);
+        border-radius: 12px;
+        margin: 0 var(--spacing-sm);
+    }
+    
+    .guest-row {
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+    
+    .guest-input {
+        min-height: 44px;
+        font-size: 16px;
+    }
+    
+    .rsvp-actions {
+        flex-direction: column;
+    }
+    
+    .add-guest-button,
+    .rsvp-submit {
+        width: 100%;
+        min-height: 48px;
+        font-size: 1rem;
+        justify-content: center;
+    }
+    
+    /* Gallery */
+    .gallery-grid {
+        gap: var(--spacing-md);
+    }
+    
+    .gallery-item {
+        border-radius: 8px;
+    }
+    
+    /* Details Cards */
+    .detail-card {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        margin-left: var(--spacing-sm);
+        margin-right: var(--spacing-sm);
+    }
+    
+    /* Menu Items */
+    .menu-category {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        margin-left: var(--spacing-sm);
+        margin-right: var(--spacing-sm);
+    }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.875rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .rsvp-form {
+        padding: var(--spacing-lg);
+        margin: 0 var(--spacing-md);
+        border-radius: 12px;
+    }
+    
+    .guest-row {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Ensure adequate spacing between interactive elements */
+    button + button,
+    .button + .button {
+        margin-top: var(--spacing-sm);
+    }
+    
+    /* Extra padding for small screens */
+    .gallery-grid {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .detail-card,
+    .menu-category {
+        margin-left: var(--spacing-md);
+        margin-right: var(--spacing-md);
+        padding: var(--spacing-xl);
+    }
+    
+    .info-card {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-xl);
+    }
+    
+    .time-box {
+        margin: 0;
     }
 }

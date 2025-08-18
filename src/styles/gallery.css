@@ -129,41 +129,44 @@
   object-fit: contain;
   border-radius: 8px;
   box-shadow: var(--shadow-xl);
+  transition: opacity 0.3s ease;
 }
 
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
   position: absolute;
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--white);
-  font-size: 1.5rem;
-  width: 48px;
-  height: 48px;
+  font-size: 1.25rem;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-base);
-  backdrop-filter: blur(10px);
-  font-weight: bold;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  font-weight: 300;
+  line-height: 1;
 }
 
 .lightbox-close {
-  top: var(--spacing-lg);
-  right: var(--spacing-lg);
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
 }
 
 .lightbox-prev {
-  left: var(--spacing-lg);
+  left: var(--spacing-xl);
   top: 50%;
   transform: translateY(-50%);
 }
 
 .lightbox-next {
-  right: var(--spacing-lg);
+  right: var(--spacing-xl);
   top: 50%;
   transform: translateY(-50%);
 }
@@ -171,31 +174,205 @@
 .lightbox-close:hover,
 .lightbox-prev:hover,
 .lightbox-next:hover {
-  background: var(--primary-gold);
-  border-color: var(--primary-gold);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
 }
 
 .lightbox-prev:hover {
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .lightbox-next:hover {
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Minimal icons with smooth transitions */
+.lightbox-close::after,
+.lightbox-close::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 1.5px;
+  background: currentColor;
+  transition: all 0.2s ease;
+  border-radius: 1px;
+}
+
+.lightbox-close::after {
+  transform: rotate(45deg);
+}
+
+.lightbox-close::before {
+  transform: rotate(-45deg);
+}
+
+.lightbox-prev::after,
+.lightbox-next::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.lightbox-prev::after {
+  border-left-color: currentColor;
+  border-bottom-color: currentColor;
+  transform: rotate(45deg) translateX(1px);
+}
+
+.lightbox-next::after {
+  border-right-color: currentColor;
+  border-top-color: currentColor;
+  transform: rotate(45deg) translateX(-1px);
+}
+
+/* Hover animations for icons */
+.lightbox-close:hover::after {
+  width: 16px;
+}
+
+.lightbox-close:hover::before {
+  width: 16px;
+}
+
+.lightbox-prev:hover::after,
+.lightbox-next:hover::after {
+  width: 8px;
+  height: 8px;
 }
 
 .lightbox-counter {
   position: absolute;
-  bottom: var(--spacing-lg);
+  bottom: var(--spacing-xl);
   left: 50%;
   transform: translateX(-50%);
   color: var(--white);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
-  background: rgba(0, 0, 0, 0.5);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 9999px; /* Pill shape */
-  backdrop-filter: blur(10px);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+/* Button fade-in animation */
+@keyframes buttonFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+@keyframes buttonFadeInNav {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+.lightbox-close {
+  animation: buttonFadeIn 0.3s ease forwards;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  animation: buttonFadeInNav 0.3s ease forwards;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .lightbox-close {
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+  }
+  
+  .lightbox-prev {
+    left: var(--spacing-lg);
+  }
+  
+  .lightbox-next {
+    right: var(--spacing-lg);
+  }
+  
+  /* Smaller icons on mobile */
+  .lightbox-close::after,
+  .lightbox-close::before {
+    width: 12px;
+  }
+  
+  .lightbox-prev::after,
+  .lightbox-next::after {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Focus states for accessibility */
+.lightbox-close:focus,
+.lightbox-prev:focus,
+.lightbox-next:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  opacity: 1;
+}
+
+/* Active states */
+.lightbox-close:active {
+  transform: scale(0.9);
+}
+
+.lightbox-prev:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+.lightbox-next:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+/* Pulse animation for edge navigation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.lightbox-prev.at-edge,
+.lightbox-next.at-edge {
+  animation: pulse 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) {
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.15);
+  }
 }
 
 /* Loading state */
@@ -242,6 +419,8 @@
   .gallery-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
   }
   
   .lightbox-content {
@@ -251,6 +430,13 @@
   .lightbox-image {
     max-width: 95%;
     max-height: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
 }
 
