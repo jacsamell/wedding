@@ -1,130 +1,118 @@
-# Wedding Website
+# Jacob & Sarah's Wedding Website 💛
 
-A beautiful, responsive wedding website with golden elm tree parallax effects, elegant animations, and a sophisticated design matching your invitation style.
+A modern, beautiful wedding website built with TypeScript, Vite, and modern CSS. Features smooth animations, responsive design, and optimal performance.
 
-## Features
+## 🚀 Quick Start
 
-- **Golden Elm Parallax**: Multi-layered scrolling with floating gold leaves
-- **Didone Typography**: Bodoni Moda font matching your invitation
-- **Smooth Animations**: Fade-in effects and rotating ornaments
-- **Responsive Design**: Beautiful on all devices
-- **Garden Theme**: Golden elm tree aesthetic throughout
-- **RSVP System**: Ready for backend integration
-
-## Quick Start
-
-1. The site is currently running at http://localhost:8000
-2. To restart the server:
-   ```bash
-   cd /Users/jacob/dev/wedding
-   python3 -m http.server 8000
-   ```
-
-## Visual Features
-
-### Parallax Effects
-- **Hero Section**: Multi-speed layers with floating leaves
-- **Tree Trunks**: Subtle golden elm silhouettes on sides
-- **Floating Leaves**: Animated gold leaves drifting across sections
-- **Background Patterns**: Custom SVG elm leaf patterns
-
-### Typography
-- **Headers**: Bodoni Moda (Didone-style) for elegant contrast
-- **Body Text**: Lora serif for readability
-- **Accents**: DM Serif Display for section titles
-
-## Project Structure
-
-```
-wedding/
-├── index.html          # Main homepage
-├── styles.css          # All styling, animations, and parallax
-├── script.js           # Enhanced parallax and interactions
-├── package.json        # Project metadata
-├── lambda/             # RSVP API function
-│   ├── index.js        # Lambda handler
-│   └── package.json    # Lambda dependencies
-└── terraform/          # AWS infrastructure
-    ├── main.tf         # Main infrastructure
-    ├── variables.tf    # Configuration variables
-    └── outputs.tf      # Output values
-```
-
-## Deployment
-
-### 1. Prepare Lambda Function
 ```bash
-cd lambda
+# Install dependencies
 npm install
-npm run zip
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-### 2. Deploy Infrastructure
+## 📁 Project Structure
+
+```
+src/
+├── styles/           # Modular CSS architecture
+│   ├── main.css     # Main stylesheet entry point
+│   ├── variables.css # CSS custom properties
+│   ├── base.css     # Reset and base styles
+│   ├── animations.css # Animation definitions
+│   ├── components.css # UI component styles
+│   ├── sections.css  # Page section styles
+│   └── utilities.css # Utility classes
+├── types.ts         # TypeScript type definitions
+├── utils.ts         # Utility functions
+├── countdown.ts     # Countdown timer logic
+├── navigation.ts    # Navigation functionality
+├── parallax.ts      # Parallax effects
+├── animations.ts    # Animation controllers
+├── interactions.ts  # User interactions
+└── main.ts          # Application entry point
+```
+
+## ✨ Features
+
+- **Modern TypeScript Architecture**: Fully typed, modular codebase
+- **Smart Navigation**: Countdown timer integrated into navigation bar
+- **Responsive Design**: Mobile-first approach with smooth animations
+- **Performance Optimized**: Lazy loading, code splitting, optimized assets
+- **Smooth Animations**: Intersection Observer-based animations
+- **Parallax Effects**: Performant parallax scrolling
+- **Interactive Elements**: Magnetic buttons, hover effects
+- **Service Worker**: PWA capabilities for offline experience
+- **SEO Optimized**: Meta tags, Open Graph, structured data
+
+## 🛠️ Development
+
+### Scripts
+
+- `npm run dev` - Start development server with HMR
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally  
+- `npm run type-check` - TypeScript type checking
+- `npm run lint` - Lint TypeScript files
+- `npm run clean` - Clean build artifacts
+
+### Tech Stack
+
+- **Build Tool**: Vite 5
+- **Language**: TypeScript 5
+- **Styling**: Modern CSS with PostCSS
+- **Deployment**: AWS (via Terraform)
+
+### CSS Architecture
+
+The project uses a modular CSS architecture:
+
+- **Variables**: CSS custom properties for consistency
+- **Base**: Reset and foundational styles
+- **Components**: Reusable UI components (buttons, cards, navigation)
+- **Sections**: Page-specific layouts
+- **Animations**: Keyframes and animation utilities
+- **Utilities**: Single-purpose helper classes
+
+### Performance Optimizations
+
+- Throttled scroll events with RAF
+- Intersection Observer for animations
+- Image preloading for critical assets
+- Tree-shaking for minimal bundle size
+- CSS bundling and minification
+- Service Worker for caching
+
+## 🎨 Design Principles
+
+- **KISS (Keep It Simple, Stupid)**: Clean, maintainable code
+- **Performance First**: Optimized for speed and smooth interactions  
+- **Accessibility**: Semantic HTML, focus management, screen reader support
+- **Progressive Enhancement**: Works without JavaScript
+
+## 📱 Browser Support
+
+- Chrome 80+
+- Firefox 75+
+- Safari 13+
+- Edge 80+
+
+## 🚀 Deployment
+
 ```bash
-cd terraform
-terraform init
-terraform plan
-terraform apply
+# Build and deploy to AWS
+npm run deploy
 ```
 
-### 3. Upload Website Files
-After Terraform creates the infrastructure, upload your files to S3:
-```bash
-aws s3 sync ../ s3://jacob-sarah-wedding-website-production/ \
-  --exclude "terraform/*" \
-  --exclude "lambda/*" \
-  --exclude ".git/*" \
-  --exclude "*.md"
-```
+The site is deployed using Terraform to AWS S3 with CloudFront distribution.
 
-## Customization
+---
 
-### Update Content
-- All text content is in `index.html`
-- Event details, menu items, and info sections are clearly marked
-
-### Modify Colors
-The golden color scheme in `styles.css`:
-```css
-:root {
-    --primary-gold: #c9a961;
-    --dark-gold: #b8935f;
-    --light-gold: #e4d5b7;
-    --cream: #fbf8f0;
-}
-```
-
-### Add Photos
-When you have engagement photos:
-1. Create an `images/` directory
-2. Update the gallery section in `index.html`
-3. Replace SVG backgrounds with actual photos
-
-## RSVP Integration
-
-The Lambda function is ready for:
-- Creating RSVPs with guest details
-- Dietary requirements
-- Children count
-- Accommodation needs
-
-Connect the frontend form to the API Gateway URL provided by Terraform.
-
-## Next Steps
-
-1. Add engagement photos to gallery
-2. Connect RSVP form to Lambda API
-3. Update meta tags for SEO/sharing
-4. Add favicon
-5. Consider adding:
-   - Gift registry section
-   - Map/directions
-   - Hotel recommendations
-
-## Tech Stack
-
-- **Frontend**: Vanilla HTML/CSS/JS with custom parallax
-- **Fonts**: Google Fonts (Bodoni Moda, DM Serif, Lora, Montserrat)
-- **Backend**: AWS Lambda + DynamoDB
-- **Hosting**: AWS S3 + CloudFront
-- **Infrastructure**: Terraform
+Built with 💛 by Jacob & Sarah

@@ -3,59 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jacob & Sarah - Wedding | March 22, 2026</title>
+    <title>Jacob & Sarah - Wedding | March 21, 2026</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Join Jacob Ellis and Sarah Smith as they celebrate their wedding on March 22, 2026, at 38 Delta Crescent, Aberfoyle Park. Garden ceremony under the golden elm tree.">
+    <meta name="description" content="Join Jacob Ellis and Sarah Smith as they celebrate their wedding on March 21, 2026, at 38 Delta Crescent, Aberfoyle Park. Garden ceremony under the golden elm tree.">
     <meta name="keywords" content="Jacob Sarah wedding, March 2026 wedding, Aberfoyle Park wedding, garden wedding">
     <meta name="author" content="Jacob Ellis & Sarah Smith">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jacobandsarah2026.com/">
-    <meta property="og:title" content="Jacob & Sarah - Wedding | March 22, 2026">
+    <meta property="og:title" content="Jacob & Sarah - Wedding | March 21, 2026">
     <meta property="og:description" content="Join us as we say 'I do' under the golden elm tree. Garden wedding celebration with Thai feast and string quartet.">
     <meta property="og:image" content="https://jacobandsarah2026.com/images/og-image.jpg">
     
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://jacobandsarah2026.com/">
-    <meta property="twitter:title" content="Jacob & Sarah - Wedding | March 22, 2026">
-    <meta property="twitter:description" content="Join us as we say 'I do' under the golden elm tree. Garden wedding celebration.">
-    <meta property="twitter:image" content="https://jacobandsarah2026.com/images/og-image.jpg">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='50%' y='50%' font-size='20' text-anchor='middle' dy='.3em'>💛</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' dy='.3em'%3E💛%3C/text%3E%3C/svg%3E">
     
     <!-- Web App Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#c9a961">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23c9a961'/><text x='50%' y='50%' font-size='100' text-anchor='middle' dy='.3em' fill='white'>JS</text></svg>">
     
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     
-    <!-- Fonts with display swap for better performance -->
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,700&family=DM+Serif+Display&family=Lora:wght@400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="premium-effects.css">
-    <link rel="stylesheet" href="navigation.css">
-    <link rel="stylesheet" href="countdown.css">
-    <link rel="stylesheet" href="timeline.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,300;6..96,400&family=DM+Serif+Display&family=Lora:wght@400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/src/styles/main.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navigation">
-        <div class="nav-container">
-            <div class="nav-brand">J & S</div>
+        <div class="nav-container container">
+            <div class="nav-brand">
+                <span class="brand-text">J & S</span>
+                <span class="nav-countdown" id="nav-countdown">Loading...</span>
+            </div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#story" class="nav-link">Our Story</a></li>
-                <li><a href="#details" class="nav-link">Details</a></li>
-                <li><a href="#menu" class="nav-link">Menu</a></li>
                 <li><a href="#info" class="nav-link">Information</a></li>
+                <li><a href="#rsvp" class="nav-link">RSVP</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#story" class="nav-link">Our Story</a></li>
+                <li><a href="#spotify" class="nav-link">Playlist</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
             </ul>
             <div class="nav-toggle">
@@ -66,153 +60,129 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Parallax -->
+    <!-- Hero Section -->
     <section id="home" class="hero parallax-container">
-        <div class="parallax-layer" data-speed="0.5">
-            <div class="hero-bg"></div>
-        </div>
+        <div class="parallax-layer hero-bg" data-speed="0.5"></div>
         <div class="parallax-layer leaf-layer" data-speed="0.3">
             <div class="floating-leaves"></div>
         </div>
-        <div class="parallax-layer" data-speed="0.8">
-            <div class="hero-content">
-                <div class="hero-text fade-in">
-                    <h1 class="names">Jacob <span class="and">&</span> Sarah</h1>
-                    <div class="wedding-date shimmer">22nd March 2026</div>
-                    <div class="location">Garden Wedding • 38 Delta Crescent, Aberfoyle Park</div>
-                </div>
-                <div class="scroll-indicator">
-                    <span>Scroll to explore</span>
-                    <div class="arrow"></div>
-                </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="names">Jacob <span class="and">&</span> Sarah</h1>
+                <div class="wedding-date shimmer"><b>21st March 2026</b></div>
+                <div class="wedding-time">4pm</div>
+                <div class="location">38 Delta Crescent, Aberfoyle Park</div>
             </div>
         </div>
+        <div class="scroll-indicator">
+            <div class="scroll-text">Scroll</div>
+            <div class="scroll-chevron">⌄</div>
+        </div>
     </section>
+
+
 
     <!-- Countdown Section -->
-    <section class="countdown-section">
+    <section id="countdown" class="countdown-section">
         <div class="container">
-            <h2 class="countdown-title fade-in-up">Counting Down to Forever</h2>
-            <div class="countdown-container">
-                <div class="countdown-item scale-in" data-delay="100">
-                    <div class="countdown-value" id="days">000</div>
-                    <div class="countdown-label">Days</div>
+            <h2 class="section-title fade-in-up draw-line">Countdown</h2>
+            <div class="countdown-grid">
+                <div class="time-box">
+                    <div class="time-value" data-unit="days">0</div>
+                    <div class="time-label">Days</div>
                 </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item scale-in" data-delay="200">
-                    <div class="countdown-value" id="hours">00</div>
-                    <div class="countdown-label">Hours</div>
+                <div class="time-box">
+                    <div class="time-value" data-unit="hours">00</div>
+                    <div class="time-label">Hours</div>
                 </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item scale-in" data-delay="300">
-                    <div class="countdown-value" id="minutes">00</div>
-                    <div class="countdown-label">Minutes</div>
+                <div class="time-box">
+                    <div class="time-value" data-unit="minutes">00</div>
+                    <div class="time-label">Minutes</div>
                 </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item scale-in" data-delay="400">
-                    <div class="countdown-value" id="seconds">00</div>
-                    <div class="countdown-label">Seconds</div>
+                <div class="time-box">
+                    <div class="time-value" data-unit="seconds">00</div>
+                    <div class="time-label">Seconds</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Our Story Section -->
-    <section id="story" class="our-story">
+
+    <!-- Gift Section -->
+    <!-- <section class="gift-section">
         <div class="container">
-            <h2 class="section-title fade-in-up draw-line">Our Story</h2>
-            <div class="story-content">
-                <p class="fade-in-up">We met while exploring the world, two souls drawn together by wanderlust and adventure. Our love story unfolded across continents, from the bustling streets of the UK to the sun-drenched shores of Australia.</p>
-                <p class="fade-in-up">After a year of traveling to every corner of our animated world, we're ready to plant our roots beneath the golden elm tree in Sarah's family garden, where we'll say "I do" surrounded by those we love most.</p>
+            <img src="/images/pres.png" alt="Present illustration" style="width: 220px; height: 220px; display: block; margin: 0 auto 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(201, 169, 97, 0.2); " />
+            <h2 class="section-title fade-in-up draw-line">Your Presence is Our Present</h2>
+            <div class="gift-content fade-in-up">
+                <p>The best gift we could receive is sharing our day with you. As many of you are travelling a long way, we request no gifts, just your presence.</p>
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <!-- Event Details with Parallax Background -->
-    <section id="details" class="event-details parallax-container">
-        <div class="parallax-layer" data-speed="0.3">
-            <div class="details-bg"></div>
-        </div>
-        <div class="parallax-layer" data-speed="0.9">
+        <!-- Additional Info Section -->
+        <section id="info" class="additional-info">
             <div class="container">
-                <h2 class="section-title letter-animate draw-line" data-text="THE CELEBRATION">The Celebration</h2>
-                <div class="details-grid">
-                    <div class="detail-card scale-in" data-delay="100">
-                        <h3 class="reveal-text">Ceremony</h3>
-                        <p class="time"><span class="count-up">4</span>:00 PM</p>
-                        <p>Under the Golden Elm</p>
-                        <p>Garden Ceremony</p>
+                <h2 class="section-title fade-in-up draw-line">Good to Know</h2>
+                <div class="info-grid">
+                    <div class="info-card rotate-in" data-delay="100">
+                        <h3>Getting There</h3>
+                        <p>We recommend Uber to and from the venue</p>
+                        <p>38 Delta Crescent, Aberfoyle Park</p>
                     </div>
-                    <div class="detail-card scale-in" data-delay="200">
-                        <h3 class="reveal-text">Reception</h3>
-                        <p class="time">5:30 PM</p>
-                        <p>Thai Feast & Drinks</p>
-                        <p>String Quartet Performance</p>
+                    <div class="info-card rotate-in gift-card" data-delay="600">
+                        <h3>Your Presence is Our Present</h3>
+                        <p>The best gift we could receive is sharing our day with you. As many of you are travelling a long way, we request no gifts, just your presence.</p>
                     </div>
-                    <div class="detail-card scale-in" data-delay="300">
-                        <h3 class="reveal-text">Evening</h3>
-                        <p class="time">Into the Night</p>
-                        <p>Dancing & Celebration</p>
-                        <p>Late Night Festivities</p>
+                    <div class="info-card rotate-in" data-delay="500">
+                        <h3>Dress Code</h3>
+                        <p>Semi-Formal / Cocktail</p>
+                        <p>Look sharp, feel comfortable.</p>
+                    </div>
+
+
+                    <div class="info-card rotate-in" data-delay="300">
+                        <h3>Little Ones Welcome</h3>
+                        <p>This is a family-friendly celebration</p>
+                        <p>Children are warmly welcomed</p>
+                    </div>
+                    <div class="info-card rotate-in" data-delay="400">
+                        <h3>Wedding Day</h3>
+                        <div id="weather-widget" class="weather-widget">Loading forecast…</div>
+                    </div>
+
+                    <div class="info-card rotate-in" data-delay="200">
+                        <h3>Accommodation</h3>
+                        <p>We recommend staying in Brighton or Glenelg</p>
+                        <p class="accommodation-links">
+                            <a href="https://maps.app.goo.gl/1Qa5ykGyQ4nr58nz9" target="_blank" rel="noopener" class="info-link">
+                                <span class="link-icon">📍</span>View Map
+                            </a>
+                            <a href="https://www.airbnb.com.au/s/Brighton--SA/homes" target="_blank" rel="noopener" class="info-link">
+                                <span class="link-icon">🏠</span>Browse Stays
+                            </a>
+                        </p>
+                        <p class="help-text">Please reach out if you need assistance</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Timeline Section -->
-    <section class="timeline-section">
+
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="menu-preview rsvp">
         <div class="container">
-            <h2 class="section-title fade-in-up draw-line">Our Wedding Day Timeline</h2>
-            <div class="timeline-container">
-                <div class="timeline-line"></div>
-                <div class="timeline-item slide-in-left" data-delay="100">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">3:30 PM</h3>
-                        <h4 class="timeline-title">Guest Arrival</h4>
-                        <p class="timeline-description">Welcome drinks in the garden</p>
-                    </div>
-                </div>
-                <div class="timeline-item slide-in-right" data-delay="200">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">4:00 PM</h3>
-                        <h4 class="timeline-title">Ceremony</h4>
-                        <p class="timeline-description">Under the golden elm tree</p>
-                    </div>
-                </div>
-                <div class="timeline-item slide-in-left" data-delay="300">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">4:30 PM</h3>
-                        <h4 class="timeline-title">Celebration</h4>
-                        <p class="timeline-description">Congratulations & photos</p>
-                    </div>
-                </div>
-                <div class="timeline-item slide-in-right" data-delay="400">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">5:30 PM</h3>
-                        <h4 class="timeline-title">Reception</h4>
-                        <p class="timeline-description">Thai feast begins</p>
-                    </div>
-                </div>
-                <div class="timeline-item slide-in-left" data-delay="500">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">7:00 PM</h3>
-                        <h4 class="timeline-title">String Quartet</h4>
-                        <p class="timeline-description">Beautiful melodies under the stars</p>
-                    </div>
-                </div>
-                <div class="timeline-item slide-in-right" data-delay="600">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">8:00 PM</h3>
-                        <h4 class="timeline-title">Dancing</h4>
-                        <p class="timeline-description">Let's celebrate into the night</p>
-                    </div>
+            <h2 class="section-title fade-in-up draw-line">RSVP</h2>
+            <div class="menu-description blur-in">
+                <p>Please RSVP at your earliest convenience, including little ones.</p>
+            </div>
+            <div class="rsvp-container">
+                <div id="guest-list" class="guest-list"></div>
+                <div class="rsvp-actions">
+                    <button type="button" id="add-guest" class="add-guest-button">
+                        <span class="plus-icon">+</span>
+                        <span>Add Guest</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -228,79 +198,41 @@
             <div class="menu-items">
                 <div class="menu-category slide-in-left" data-delay="100">
                     <h4>For Everyone</h4>
-                    <p>Meat & Vegetarian Options • Mild & Spicy Choices</p>
+                    <p>Meat & Vegetarian<br>Mild & Spicy Choices</p>
                 </div>
                 <div class="menu-category fade-in-up" data-delay="200">
                     <h4>Drinks</h4>
-                    <p>Wine Selection • Beer • Soft Drinks</p>
+                    <p>South Australian Wine<br>Beer<br>Soft Drinks</p>
                 </div>
                 <div class="menu-category slide-in-right" data-delay="300">
                     <h4>All Day</h4>
-                    <p>Snacks • Thai Delicacies • Sweet Treats</p>
+                    <p>Charcuterie<br>Thai Delicacies<br>Sweet Treats</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- RSVP Section - Coming Soon -->
-    <!-- 
-    <section class="rsvp-section parallax-container">
-        <div class="parallax-layer" data-speed="0.4">
-            <div class="rsvp-bg"></div>
-        </div>
-        <div class="parallax-layer" data-speed="0.9">
-            <div class="container">
-                <h2 class="section-title fade-in-up">Join Us</h2>
-                <div class="rsvp-content scale-in">
-                    <p>Your presence would make our day complete</p>
-                    <button class="rsvp-button shimmer">RSVP</button>
-                    <p class="rsvp-note">Online form coming soon</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    -->
 
-    <!-- Additional Info Section -->
-    <section id="info" class="additional-info">
+    <!-- Our Story Section -->
+    <section id="story" class="our-story">
         <div class="container">
-            <h2 class="section-title fade-in-up draw-line">Good to Know</h2>
-            <div class="info-grid">
-                <div class="info-card rotate-in" data-delay="100">
-                    <h3>Getting There</h3>
-                    <p>We recommend Uber to and from the venue</p>
-                    <p>38 Delta Crescent, Aberfoyle Park</p>
-                </div>
-                <div class="info-card rotate-in" data-delay="200">
-                    <h3>Accommodation</h3>
-                    <p>We recommend staying in Brighton or Glenelg</p>
-                    <p class="accommodation-links">
-                        <a href="https://maps.app.goo.gl/1Qa5ykGyQ4nr58nz9" target="_blank" rel="noopener" class="info-link">
-                            <span class="link-icon">📍</span>View Map
-                        </a>
-                        <a href="https://www.airbnb.com.au/s/Brighton--SA/homes?refinement_paths%5B%5D=%2Fhomes&adults=2&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-09-01&monthly_length=3&monthly_end_date=2025-12-01&price_filter_input_type=2&channel=EXPLORE&zoom_level=12.3350359462167&search_type=user_map_move&price_filter_num_nights=6&place_id=ChIJ7y5wOVDasGoRcKqOYlQ2AwU&acp_id=3ab9e138-255a-467a-bf33-e9f317f9b305&date_picker_type=calendar&checkin=2026-03-16&checkout=2026-03-22&source=structured_search_input_header&query=Brighton%2C%20SA&search_mode=regular_search&ne_lat=-34.94864201208818&ne_lng=138.6136484287648&sw_lat=-35.08862386533973&sw_lng=138.48291770331514&zoom=12.3350359462167&search_by_map=true" target="_blank" rel="noopener" class="info-link">
-                            <span class="link-icon">🏠</span>Browse Stays
-                        </a>
-                    </p>
-                    <p class="help-text">Please reach out if you need assistance</p>
-                </div>
-                <div class="info-card rotate-in" data-delay="300">
-                    <h3>Little Ones Welcome</h3>
-                    <p>This is a family-friendly celebration</p>
-                    <p>Children are warmly welcomed</p>
-                </div>
+            <h2 class="section-title fade-in-up draw-line">Our Story</h2>
+            <div class="story-content">
+                <p class="fade-in-up">It began with a glance across a dinner table in Thailand—two wandering souls who found home in each other's eyes. By our second day together, the world had shifted. Hours dissolved into heartbeats as we talked through every bus ride, every sunset, every moment we could steal. What started as adventure became something deeper: a love that crossed continents and defied distance.</p>
+                <p class="fade-in-up">When Sarah flew home and I continued on, we discovered that love knows no borders. Every day brought voice calls that lasted hours, messages that bridged oceans, and a certainty that grew stronger with each "goodnight" whispered across time zones. I abandoned my planned route through Southeast Asia—how could I explore the world when my world was waiting in Adelaide?</p>
+                <p class="fade-in-up">Together, we've painted our love story across 35 countries. We've watched sunrise from Machu Picchu (where I dropped to one knee on Sarah's birthday), stolen kisses by Lake Bled, and built dreams in Dublin's rain. Now, with our daughter's heartbeat joining ours and two cats who've claimed our hearts, we're writing our greatest adventure yet—a lifetime of mornings waking up next to each other, of shared laughter, of building a family beneath the same golden elm where we'll say "I do."</p>
             </div>
         </div>
     </section>
 
-    <!-- Gift Section -->
-    <section class="gift-section">
-        <div class="gift-bg-left"></div>
+    <!-- Spotify Playlist Section -->
+    <section id="spotify" class="spotify-section">
         <div class="container">
-            <h2 class="section-title fade-in-up draw-line">Your Presence is Our Present</h2>
-            <div class="gift-content fade-in-up">
-                <p>The best gift we could receive is sharing our day with you. As many of you are travelling a long way, we request no gifts, just your presence.</p>
+            <h2 class="section-title fade-in-up draw-line">Request a Song</h2>
+            <div class="spotify-intro">
+                <p>Help us create the perfect soundtrack for our special day!</p>
             </div>
+            <div class="spotify-container"></div>
         </div>
     </section>
 
@@ -309,11 +241,17 @@
         <div class="parallax-layer" data-speed="0.3">
             <div class="gallery-bg"></div>
         </div>
-        <div class="parallax-layer" data-speed="0.9">
-            <div class="container">
-                <h2 class="section-title fade-in-up draw-line">Moments Together</h2>
-                <div class="gallery-placeholder blur-in">
-                    <p>Engagement photos coming soon</p>
+        <div class="container">
+            <h2 class="section-title fade-in-up draw-line">Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item scale-in" data-delay="100">
+                    <img src="/images/engadge/IMG_3007.JPG" alt="Jacob and Sarah engagement photo" loading="lazy">
+                </div>
+                <div class="gallery-item scale-in" data-delay="200">
+                    <img src="/images/engadge/IMG_5918.jpg" alt="Jacob and Sarah engagement photo" loading="lazy">
+                </div>
+                <div class="gallery-item scale-in" data-delay="400">
+                    <img src="/images/engadge/IMG-20240513-WA0044.jpg" alt="Jacob and Sarah engagement photo" loading="lazy">
                 </div>
             </div>
         </div>
@@ -322,17 +260,14 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>Jacob & Sarah • 22nd March 2026</p>
-            <p class="hashtag">#JacobAndSarah2026</p>
+            <p>Jacob & Sarah • 21st March 2026</p>
+            <div class="footer-credit">
+                <p>Designed & Built with ♡ by Jacob Ellis</p>
+            </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script src="premium-interactions.js"></script>
-    <script src="loader.js"></script>
-    <script src="navigation.js"></script>
-    <script src="countdown.js"></script>
-    <script src="timeline.js"></script>
-    <script src="performance.js" defer></script>
+    <!-- Scripts -->
+    <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

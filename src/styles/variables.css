@@ -1,0 +1,58 @@
+:root {
+  /* Colors */
+  --primary-gold: #c9a961;
+  --dark-gold: #b8935f;
+  --light-gold: #e4d5b7;
+  --cream: #fbf8f0;
+  --soft-beige: #f5ede0;
+  --text-dark: #3a3a3a;
+  --text-light: #6b6b6b;
+  --white: #ffffff;
+  --black: #000000;
+  
+  /* Typography */
+  --font-serif: 'Lora', serif;
+  --font-display: 'DM Serif Display', serif;
+  --font-elegant: 'Bodoni Moda', serif;
+  --font-sans: 'Montserrat', sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+  --transition-slower: 800ms ease;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  
+  /* Breakpoints for reference */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  
+  /* Z-index layers */
+  --z-background: -1;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+}
+
+
