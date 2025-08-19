@@ -18,9 +18,14 @@ output "cloudfront_distribution_id" {
   value       = aws_cloudfront_distribution.website.id
 }
 
-output "api_gateway_url" {
-  description = "API Gateway URL for RSVP API"
-  value       = aws_apigatewayv2_stage.prod.invoke_url
+output "rsvp_api_url" {
+  description = "RSVP Lambda Function URL"
+  value       = aws_lambda_function_url.rsvp_api.function_url
+}
+
+output "spotify_api_url" {
+  description = "Spotify Lambda Function URL"
+  value       = aws_lambda_function_url.spotify_api.function_url
 }
 
 output "dynamodb_table_name" {

@@ -1,3 +1,5 @@
+import { API_CONFIG, apiCall } from './config';
+
 interface GuestData {
     id: number;
     name: string;
@@ -46,6 +48,7 @@ export function initRSVP(): void {
                 </div>
                 <div class="guest-actions">
                     <div class="guest-attendance">
+                        <span class="attendance-label">Attending?</span>
                         <input type="checkbox" id="attending-${id}" class="attendance-toggle" ${attending ? 'checked' : ''}>
                         <label for="attending-${id}" class="attendance-switch">
                             <span class="switch-track">
@@ -98,18 +101,44 @@ export function initRSVP(): void {
             // Trigger save animation
             saveBtn.classList.add('saving');
             
-            // Simulate API save delay
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            saveBtn.classList.remove('saving');
-            saveBtn.classList.add('saved');
-            
-            // Success ripple effect
-            createSuccessRipple(saveBtn);
-            
-            // Success feedback on the card
-            card.classList.add('saved-success');
-            setTimeout(() => card.classList.remove('saved-success'), 2000);
+            try {
+                // Save guest data to API
+                if (!guestData) throw new Error('Guest data not found');
+                
+                await apiCall(`${API_CONFIG.RSVP_API_URL}/guests`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: guestData.id,
+                        name: guestData.name,
+                        dietary: guestData.dietary,
+                        attending: guestData.attending,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                saveBtn.classList.remove('saving');
+                saveBtn.classList.add('saved');
+                
+                // Success ripple effect
+                createSuccessRipple(saveBtn);
+                
+                // Success feedback on the card
+                card.classList.add('saved-success');
+                setTimeout(() => card.classList.remove('saved-success'), 2000);
+                
+            } catch (error) {
+                console.error('Failed to save guest:', error);
+                saveBtn.classList.remove('saving');
+                
+                // Show error state
+                card.classList.add('save-error');
+                setTimeout(() => card.classList.remove('save-error'), 3000);
+                
+                // Reset saved state since save failed
+                if (guestData) {
+                    guestData.saved = false;
+                }
+            }
         });
 
         // Attendance toggle handler

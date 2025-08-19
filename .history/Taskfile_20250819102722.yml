@@ -1,0 +1,27 @@
+version: "3"
+
+vars:
+  TERRAFORM_DIR: "./terraform"
+
+tasks:
+  start:
+    desc: "Start the development server"
+    cmds:
+      - npm run dev
+
+  build:
+    desc: "Build the website and Lambda functions"
+    cmds:
+      - npm run build
+      - chmod +x ./build-lambda.sh
+      - ./build-lambda.sh
+
+  deploy:
+    desc: "Deploy the application"
+    deps: [build]
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform init -upgrade
+      - cd {{.TERRAFORM_DIR}} && terraform plan
+      - cd {{.TERRAFORM_DIR}} && terraform apply
+    preconditions:
+      - test -f terraform/terraform.tfvars || (echo "Please create terraform.tfvars from the example file" && exit 1)

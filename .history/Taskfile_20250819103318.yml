@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  start:
+    desc: "Start the development server"
+    cmds:
+      - npm start
+
+  build:
+    desc: "Build website and Lambda functions"
+    cmds:
+      - npm run build
+
+  deploy:
+    desc: "Deploy to AWS (builds first)"
+    deps: [build]
+    cmds:
+      - cd terraform && terraform init -upgrade && terraform plan && terraform apply

@@ -1,0 +1,39 @@
+{
+  "name": "wedding-website",
+  "version": "2.0.0",
+  "description": "Modern wedding website built with TypeScript and Vite",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "npx tsc && npx vite build && chmod +x ./build-lambda.sh && ./build-lambda.sh",
+    "deploy": "npm run build && cd terraform && terraform init -upgrade && terraform plan && terraform apply",
+    "dev": "vite",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "tsc --noEmit && eslint src/**/*.ts",
+    "clean": "rm -rf dist node_modules/.vite"
+  },
+  "keywords": [
+    "wedding",
+    "website",
+    "typescript",
+    "vite"
+  ],
+  "author": "Jacob & Sarah",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "eslint": "^8.0.0",
+    "gsap": "^3.13.0",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "postcss-nesting": "^12.0.1",
+    "terser": "^5.24.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
+}

@@ -4,13 +4,14 @@
   "description": "Modern wedding website built with TypeScript and Vite",
   "type": "module",
   "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build && chmod +x ./build-lambda.sh && ./build-lambda.sh",
+    "deploy": "npm run build && cd terraform && terraform init -upgrade && terraform plan && terraform apply",
     "dev": "vite",
-    "build": "tsc && vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "tsc --noEmit && eslint src/**/*.ts",
-    "clean": "rm -rf dist node_modules/.vite",
-    "deploy": "npm run build && terraform apply"
+    "clean": "rm -rf dist node_modules/.vite"
   },
   "keywords": [
     "wedding",

@@ -20,14 +20,20 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xl);
   margin-top: var(--spacing-2xl);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-items: center;
 }
 
 .gallery-item {
   position: relative;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
+  width: 100%;
+  max-width: 280px;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -36,6 +42,20 @@
   box-shadow: var(--shadow-md);
   opacity: 0;
   transform: scale(0.9);
+}
+
+/* Make the center image (proposal moment) slightly more prominent */
+.gallery-item:nth-child(2) {
+  transform: scale(0.95);
+  z-index: 2;
+}
+
+.gallery-item:nth-child(2).visible {
+  transform: scale(1.05);
+}
+
+.gallery-item:nth-child(2):hover {
+  transform: scale(1.1) rotate(1deg);
 }
 
 .gallery-item.visible {
@@ -52,8 +72,22 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 25%;
   transition: all var(--transition-slow);
   opacity: 0;
+}
+
+/* Specific positioning for each image to center the subjects */
+.gallery-item:nth-child(1) img {
+  object-position: center 20%; /* Focus on faces during proposal setup */
+}
+
+.gallery-item:nth-child(2) img {
+  object-position: center 30%; /* Focus on the ring/hands moment */
+}
+
+.gallery-item:nth-child(3) img {
+  object-position: center 25%; /* Focus on the celebration */
 }
 
 .gallery-item img.loaded {
@@ -417,10 +451,29 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .gallery-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-lg);
     margin-top: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    max-width: 320px;
+  }
+  
+  .gallery-item {
+    max-width: 100%;
+    aspect-ratio: 4/5; /* Slightly more square on mobile */
+  }
+  
+  /* Reset center image scaling on mobile for consistency */
+  .gallery-item:nth-child(2) {
+    transform: scale(0.9);
+  }
+  
+  .gallery-item:nth-child(2).visible {
+    transform: scale(1);
+  }
+  
+  .gallery-item:nth-child(2):hover {
+    transform: scale(1.05) rotate(1deg);
   }
   
   .lightbox-content {
@@ -437,6 +490,11 @@
   .gallery-grid {
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
+    max-width: 280px;
+  }
+  
+  .gallery-item {
+    aspect-ratio: 3/4; /* Portrait ratio on small screens */
   }
 }
 

@@ -1,0 +1,175 @@
+version: "3"
+
+vars:
+  TERRAFORM_DIR: "./terraform"
+
+tasks:
+  # Development
+  start:
+    desc: "Start the development server"
+    cmds:
+      - npm run dev
+    sources:
+      - src/**/*
+      - index.html
+      - vite.config.ts
+
+  # Building
+  build:
+    desc: "Build the website and Lambda functions"
+    deps: [build:frontend, build:lambda]
+    
+  build:frontend:
+    desc: "Build the frontend website"
+    cmds:
+      - npm run build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+      - tsconfig.json
+    generates:
+      - dist/**/*
+
+  build:lambda:
+    desc: "Build Lambda deployment packages"
+    cmds:
+      - chmod +x ./build-lambda.sh
+      - ./build-lambda.sh
+    sources:
+      - lambda-rsvp/**/*
+      - lambda-spotify/**/*
+      - build-lambda.sh
+    generates:
+      - terraform/rsvp-lambda.zip
+      - terraform/spotify-lambda.zip
+
+  # Deployment
+  deploy:
+    desc: "Deploy the application (builds first)"
+    deps: [build]
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform init -upgrade
+      - cd {{.TERRAFORM_DIR}} && terraform plan
+      - cd {{.TERRAFORM_DIR}} && terraform apply
+    preconditions:
+      - test -f terraform/terraform.tfvars || (echo "Please create terraform.tfvars from the example file" && exit 1)
+
+  deploy:plan:
+    desc: "Show terraform deployment plan"
+    deps: [build]
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform plan
+
+  deploy:apply:
+    desc: "Apply terraform changes without interactive approval"
+    deps: [build]
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform apply -auto-approve
+
+  # Infrastructure management
+  infra:init:
+    desc: "Initialize Terraform"
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform init
+
+  infra:validate:
+    desc: "Validate Terraform configuration"
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform validate
+
+  infra:destroy:
+    desc: "Destroy infrastructure (use with caution!)"
+    cmds:
+      - cd {{.TERRAFORM_DIR}} && terraform destroy
+    prompt: "This will destroy all infrastructure. Are you sure?"
+
+  # Utility tasks
+  clean:
+    desc: "Clean build artifacts"
+    cmds:
+      - rm -rf dist
+      - rm -rf node_modules/.vite
+      - rm -f terraform/*.zip
+      - cd lambda-rsvp && rm -rf node_modules
+      - cd lambda-spotify && rm -rf node_modules
+
+  lint:
+    desc: "Run TypeScript and ESLint checks"
+    cmds:
+      - npm run lint
+
+  type-check:
+    desc: "Run TypeScript type checking"
+    cmds:
+      - npm run type-check
+
+  preview:
+    desc: "Preview the built website locally"
+    deps: [build:frontend]
+    cmds:
+      - npm run preview
+
+  # Setup tasks
+  setup:
+    desc: "Setup the project (install dependencies)"
+    cmds:
+      - npm install
+      - cd lambda-rsvp && npm install
+      - cd lambda-spotify && npm install
+
+  setup:terraform:
+    desc: "Setup Terraform configuration"
+    cmds:
+      - |
+        if [ ! -f terraform/terraform.tfvars ]; then
+          echo "Creating terraform.tfvars from example..."
+          cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+          echo "Please edit terraform/terraform.tfvars with your actual values"
+        else
+          echo "terraform.tfvars already exists"
+        fi
+      - cd {{.TERRAFORM_DIR}} && terraform init
+
+  # Development helpers
+  logs:lambda:
+    desc: "Stream Lambda function logs (requires AWS CLI)"
+    cmds:
+      - echo "RSVP Lambda logs:"
+      - aws logs tail /aws/lambda/jacob-sarah-wedding-rsvp-api-production --follow &
+      - echo "Spotify Lambda logs:"
+      - aws logs tail /aws/lambda/jacob-sarah-wedding-spotify-api-production --follow
+
+  sync:s3:
+    desc: "Sync built website to S3 bucket"
+    deps: [build:frontend]
+    cmds:
+      - aws s3 sync dist/ s3://jacob-sarah-wedding-website-production/ --delete
+      - echo "Website synced! Don't forget to invalidate CloudFront cache"
+
+  invalidate:cloudfront:
+    desc: "Invalidate CloudFront cache"
+    cmds:
+      - |
+        DISTRIBUTION_ID=$(cd terraform && terraform output -raw cloudfront_distribution_id)
+        aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+
+  # Complete deployment workflow
+  ship:
+    desc: "Complete deployment: build, deploy, sync, and invalidate cache"
+    cmds:
+      - task build
+      - task deploy:apply
+      - task sync:s3
+      - task invalidate:cloudfront
+      - echo "🚀 Deployment complete! Your wedding website is live!"
+
+  # Development workflow
+  dev:
+    desc: "Full development setup"
+    cmds:
+      - task setup
+      - task setup:terraform
+      - echo "✅ Development environment ready!"
+      - echo "Run 'task start' to begin developing"

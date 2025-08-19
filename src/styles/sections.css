@@ -504,6 +504,15 @@
 .guest-attendance {
   display: flex;
   align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.attendance-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .attendance-toggle {

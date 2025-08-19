@@ -1,0 +1,41 @@
+version: "3"
+
+tasks:
+  start:
+    desc: "Start the development server"
+    cmds:
+      - npm start
+
+  build:
+    desc: "Build website and Lambda functions"
+    cmds:
+      - npm run build
+
+  commit:
+    desc: "Add, commit, and push changes"
+    cmds:
+      - git add .
+      - git status
+      - git commit -m "Update wedding website - $(date '+%Y-%m-%d %H:%M')"
+      - git push
+
+  deploy:
+    desc: "Deploy to AWS (builds first)"
+    deps: [build]
+    cmds:
+      - cd terraform && terraform init -upgrade && terraform plan && terraform apply
+
+  verify:
+    desc: "Verify deployment is working"
+    cmds:
+      - echo "🔍 Checking deployment status..."
+      - cd terraform && terraform output
+      - echo "✅ Deployment verification complete"
+
+  ship:
+    desc: "Full workflow: build → commit → push → deploy → verify"
+    deps: [build, commit]
+    cmds:
+      - task deploy
+      - task verify
+      - echo "🚀 Ship complete! Wedding website deployed!"

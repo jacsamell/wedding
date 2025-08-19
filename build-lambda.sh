@@ -1,11 +1,22 @@
 #!/bin/bash
 
-echo "Building Lambda deployment package..."
+echo "Building Lambda deployment packages..."
 
-cd lambda
+# Build RSVP Lambda
+echo "Building RSVP Lambda..."
+cd lambda-rsvp
 npm install --production
-zip -r ../terraform/lambda.zip .
+zip -r ../terraform/rsvp-lambda.zip .
 cd ..
 
-echo "Lambda package created at terraform/lambda.zip"
+# Build Spotify Lambda
+echo "Building Spotify Lambda..."
+cd lambda-spotify
+npm install --production
+zip -r ../terraform/spotify-lambda.zip .
+cd ..
+
+echo "Lambda packages created:"
+echo "  - terraform/rsvp-lambda.zip"
+echo "  - terraform/spotify-lambda.zip"
 echo "Ready for Terraform deployment!"

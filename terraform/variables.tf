@@ -21,3 +21,33 @@ variable "domain_name" {
   type        = string
   default     = "jacobandsarah.wedding"
 }
+
+variable "spotify_client_id" {
+  description = "Spotify application client ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "spotify_client_secret" {
+  description = "Spotify application client secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "spotify_redirect_uri" {
+  description = "Spotify application redirect URI"
+  type        = string
+  default     = "http://localhost:8080/callback"
+}
+
+variable "spotify_refresh_token" {
+  description = "Spotify refresh token for the authorized user"
+  type        = string
+  sensitive   = true
+}
+
+variable "spotify_playlist_id" {
+  description = "Spotify playlist ID where songs will be added"
+  type        = string
+  default     = ""
+}

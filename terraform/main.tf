@@ -266,9 +266,9 @@ resource "aws_dynamodb_table" "rsvps" {
   }
 }
 
-# Lambda Function for RSVP API
-resource "aws_iam_role" "lambda_role" {
-  name = "${var.project_name}-lambda-role-${var.environment}"
+# IAM Role for RSVP Lambda
+resource "aws_iam_role" "rsvp_lambda_role" {
+  name = "${var.project_name}-rsvp-lambda-role-${var.environment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -284,9 +284,9 @@ resource "aws_iam_role" "lambda_role" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_policy" {
-  name = "${var.project_name}-lambda-policy-${var.environment}"
-  role = aws_iam_role.lambda_role.id
+resource "aws_iam_role_policy" "rsvp_lambda_policy" {
+  name = "${var.project_name}-rsvp-lambda-policy-${var.environment}"
+  role = aws_iam_role.rsvp_lambda_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -318,12 +318,51 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
+# IAM Role for Spotify Lambda
+resource "aws_iam_role" "spotify_lambda_role" {
+  name = "${var.project_name}-spotify-lambda-role-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "spotify_lambda_policy" {
+  name = "${var.project_name}-spotify-lambda-policy-${var.environment}"
+  role = aws_iam_role.spotify_lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+      }
+    ]
+  })
+}
+
+# RSVP Lambda Function
 resource "aws_lambda_function" "rsvp_api" {
-  filename         = "lambda.zip"
+  filename         = "rsvp-lambda.zip"
   function_name    = "${var.project_name}-rsvp-api-${var.environment}"
-  role            = aws_iam_role.lambda_role.arn
+  role            = aws_iam_role.rsvp_lambda_role.arn
   handler         = "index.handler"
-  source_code_hash = filebase64sha256("lambda.zip")
+  source_code_hash = filebase64sha256("rsvp-lambda.zip")
   runtime         = "nodejs18.x"
   timeout         = 30
 
@@ -340,44 +379,58 @@ resource "aws_lambda_function" "rsvp_api" {
   }
 }
 
-# API Gateway for Lambda
-resource "aws_apigatewayv2_api" "rsvp_api" {
-  name          = "${var.project_name}-rsvp-api-${var.environment}"
-  protocol_type = "HTTP"
-  
-  cors_configuration {
-    allow_origins     = ["https://${var.domain_name}", "https://www.${var.domain_name}"]
-    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    allow_headers     = ["*"]
-    expose_headers    = ["*"]
-    max_age           = 3600
-    allow_credentials = false
+# Spotify Lambda Function
+resource "aws_lambda_function" "spotify_api" {
+  filename         = "spotify-lambda.zip"
+  function_name    = "${var.project_name}-spotify-api-${var.environment}"
+  role            = aws_iam_role.spotify_lambda_role.arn
+  handler         = "spotify-handler.handler"
+  source_code_hash = filebase64sha256("spotify-lambda.zip")
+  runtime         = "nodejs18.x"
+  timeout         = 30
+
+  environment {
+    variables = {
+      SPOTIFY_CLIENT_ID     = var.spotify_client_id
+      SPOTIFY_CLIENT_SECRET = var.spotify_client_secret
+      SPOTIFY_REDIRECT_URI  = var.spotify_redirect_uri
+      SPOTIFY_REFRESH_TOKEN = var.spotify_refresh_token
+      SPOTIFY_PLAYLIST_ID   = var.spotify_playlist_id
+      CORS_ORIGIN          = "https://${var.domain_name}"
+    }
+  }
+
+  tags = {
+    Name        = "${var.project_name}-spotify-api"
+    Environment = var.environment
   }
 }
 
-resource "aws_apigatewayv2_integration" "lambda" {
-  api_id             = aws_apigatewayv2_api.rsvp_api.id
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
-  integration_uri    = aws_lambda_function.rsvp_api.invoke_arn
+# Lambda Function URLs
+resource "aws_lambda_function_url" "rsvp_api" {
+  function_name      = aws_lambda_function.rsvp_api.function_name
+  authorization_type = "NONE"
+  
+  cors {
+    allow_credentials = false
+    allow_origins     = ["https://${var.domain_name}", "https://www.${var.domain_name}"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_headers     = ["date", "keep-alive", "content-type", "content-length", "authorization"]
+    expose_headers    = ["date", "keep-alive"]
+    max_age          = 86400
+  }
 }
 
-resource "aws_apigatewayv2_route" "rsvp_routes" {
-  api_id    = aws_apigatewayv2_api.rsvp_api.id
-  route_key = "ANY /{proxy+}"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
-}
-
-resource "aws_apigatewayv2_stage" "prod" {
-  api_id      = aws_apigatewayv2_api.rsvp_api.id
-  name        = "prod"
-  auto_deploy = true
-}
-
-resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.rsvp_api.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.rsvp_api.execution_arn}/*/*"
+resource "aws_lambda_function_url" "spotify_api" {
+  function_name      = aws_lambda_function.spotify_api.function_name
+  authorization_type = "NONE"
+  
+  cors {
+    allow_credentials = false
+    allow_origins     = ["https://${var.domain_name}", "https://www.${var.domain_name}"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_headers     = ["date", "keep-alive", "content-type", "content-length", "authorization"]
+    expose_headers    = ["date", "keep-alive"]
+    max_age          = 86400
+  }
 }

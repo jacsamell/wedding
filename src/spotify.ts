@@ -1,4 +1,5 @@
 import { $ } from './utils';
+import { API_CONFIG, apiCall } from './config';
 
 export function initSpotify(): void {
     const spotifySection = $('#spotify');
@@ -86,13 +87,10 @@ export function initSpotify(): void {
         try {
             searchResults.innerHTML = '<div class="search-loading">Searching...</div>';
             
-            const response = await fetch('/api/spotify/search', {
+            const data = await apiCall(`${API_CONFIG.SPOTIFY_API_URL}/search`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query })
             });
-            
-            const data = await response.json();
             
             if (data.tracks && data.tracks.length > 0) {
                 searchResults.innerHTML = data.tracks.map((track: any) => `
@@ -198,10 +196,11 @@ export function initSpotify(): void {
             submitBtn.disabled = true;
             
             try {
-                // Store in localStorage for now (you can replace with API call later)
-                const existingRequests = JSON.parse(localStorage.getItem('songRequests') || '[]');
-                existingRequests.push(requestData);
-                localStorage.setItem('songRequests', JSON.stringify(existingRequests));
+                // Submit song request to API
+                await apiCall(`${API_CONFIG.SPOTIFY_API_URL}/add-song`, {
+                    method: 'POST',
+                    body: JSON.stringify(requestData)
+                });
                 
                 // Show success message
                 messageDiv.innerHTML = `
