@@ -5,17 +5,18 @@ A modern, beautiful wedding website built with TypeScript, Vite, and modern CSS.
 ## 🚀 Quick Start
 
 ```bash
-# Install dependencies
 npm install
+task start        # or npm start
+```
 
-# Start development server
-npm run dev
+## 🛠 **Build & Deploy**
 
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+```bash
+task build        # Build website + Lambda functions
+task commit       # Git add, commit, and push
+task deploy       # Deploy to AWS (builds first)
+task verify       # Check deployment status
+task ship         # Complete workflow: build → commit → deploy → verify
 ```
 
 ## 📁 Project Structure
