@@ -351,6 +351,20 @@ resource "aws_iam_role_policy" "spotify_lambda_policy" {
           "logs:PutLogEvents"
         ]
         Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ]
+        Resource = [
+          aws_dynamodb_table.rsvps.arn,
+          "${aws_dynamodb_table.rsvps.arn}/index/*"
+        ]
       }
     ]
   })
@@ -396,6 +410,7 @@ resource "aws_lambda_function" "spotify_api" {
       SPOTIFY_REDIRECT_URI  = var.spotify_redirect_uri
       SPOTIFY_REFRESH_TOKEN = var.spotify_refresh_token
       SPOTIFY_PLAYLIST_ID   = var.spotify_playlist_id
+      DYNAMODB_TABLE        = aws_dynamodb_table.rsvps.name
       CORS_ORIGIN          = "https://${var.domain_name}"
     }
   }
@@ -414,7 +429,7 @@ resource "aws_lambda_function_url" "rsvp_api" {
   cors {
     allow_credentials = false
     allow_origins     = ["https://${var.domain_name}", "https://www.${var.domain_name}"]
-    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE"]
     allow_headers     = ["date", "keep-alive", "content-type", "content-length", "authorization"]
     expose_headers    = ["date", "keep-alive"]
     max_age          = 86400
@@ -428,7 +443,7 @@ resource "aws_lambda_function_url" "spotify_api" {
   cors {
     allow_credentials = false
     allow_origins     = ["https://${var.domain_name}", "https://www.${var.domain_name}"]
-    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE"]
     allow_headers     = ["date", "keep-alive", "content-type", "content-length", "authorization"]
     expose_headers    = ["date", "keep-alive"]
     max_age          = 86400

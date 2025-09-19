@@ -127,15 +127,20 @@ async function createRsvp(event) {
 async function handleSongRequest(event) {
     const body = JSON.parse(event.body || '{}');
     
+    // Handle both direct song data and nested songData format
+    const songData = body.songData || body;
+    const requestInfo = body.requestInfo || {};
+    
     const songRequest = {
         id: uuidv4(),
-        songName: body.songName,
-        artistName: body.artistName,
-        yourName: body.yourName || 'Anonymous',
-        message: body.message || '',
-        spotifyUri: body.spotifyUri || '',
-        timestamp: body.timestamp || new Date().toISOString(),
-        userAgent: body.userAgent || event.requestContext?.http?.userAgent || 'unknown',
+        type: 'song-request',
+        songName: songData.songName || 'Unknown Song',
+        artistName: songData.artistName || 'Unknown Artist',
+        yourName: songData.yourName || 'Anonymous',
+        message: songData.message || '',
+        spotifyUri: songData.spotifyUri || '',
+        timestamp: requestInfo.timestamp || new Date().toISOString(),
+        userAgent: requestInfo.userAgent || event.requestContext?.http?.userAgent || 'unknown',
         sourceIp: event.requestContext?.http?.sourceIp || 'unknown',
         createdAt: new Date().toISOString()
     };
@@ -152,17 +157,27 @@ async function handleSongRequest(event) {
         timestamp: songRequest.createdAt
     });
     
-    // Just log the request, don't store in DynamoDB
-    console.log('Song Request Received - Full Details:', JSON.stringify(songRequest, null, 2));
-    
-    return {
-        statusCode: 201,
-        headers,
-        body: JSON.stringify({ 
-            success: true,
-            message: `Song request for "${songRequest.songName}" received! We'll add it to our playlist.`,
-            id: songRequest.id
-        })
-    };
+    try {
+        // Save to DynamoDB
+        await dynamodb.put({
+            TableName: TABLE_NAME,
+            Item: songRequest
+        }).promise();
+        
+        console.log('Song Request Saved to DynamoDB:', songRequest.id);
+        
+        return {
+            statusCode: 201,
+            headers,
+            body: JSON.stringify({ 
+                success: true,
+                message: `Song request for "${songRequest.songName}" received! We'll add it to our playlist.`,
+                id: songRequest.id
+            })
+        };
+    } catch (error) {
+        console.error('DynamoDB error:', error);
+        throw error;
+    }
 }
 

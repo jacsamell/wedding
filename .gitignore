@@ -35,5 +35,6 @@ Thumbs.db
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+terraform.tfvars
 
 .history/

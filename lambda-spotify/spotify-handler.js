@@ -1,7 +1,10 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const { v4: uuidv4 } = require('uuid');
+const AWS = require('aws-sdk');
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE;
 
 // Initialize Spotify API with your app credentials
 const spotifyApi = new SpotifyWebApi({
@@ -84,23 +87,44 @@ exports.handler = async (event) => {
       case 'requestSong':
         const { songData, requestInfo } = body;
         
-        // Log request details
-        console.log('Song Request:', {
-          song: `${songData.songName} by ${songData.artistName}`,
-          requestedBy: songData.yourName,
-          message: songData.message,
-          spotifyUri: songData.spotifyUri,
-          timestamp: requestInfo.timestamp,
-          userAgent: requestInfo.userAgent,
-          sourceIp: event.requestContext?.http?.sourceIp || 'unknown'
-        });
+        const songRequest = {
+          id: uuidv4(),
+          type: 'song-request-spotify',
+          songName: songData.songName || 'Unknown Song',
+          artistName: songData.artistName || 'Unknown Artist',
+          yourName: songData.yourName || 'Anonymous',
+          message: songData.message || '',
+          spotifyUri: songData.spotifyUri || '',
+          timestamp: requestInfo?.timestamp || new Date().toISOString(),
+          userAgent: requestInfo?.userAgent || event.requestContext?.http?.userAgent || 'unknown',
+          sourceIp: event.requestContext?.http?.sourceIp || 'unknown',
+          createdAt: new Date().toISOString()
+        };
+        
+        // Log request details to CloudWatch
+        console.log('Song Request via Spotify Lambda:', songRequest);
+        
+        // Save to DynamoDB if table is configured
+        if (DYNAMODB_TABLE) {
+          try {
+            await dynamodb.put({
+              TableName: DYNAMODB_TABLE,
+              Item: songRequest
+            }).promise();
+            console.log('Song Request Saved to DynamoDB:', songRequest.id);
+          } catch (dbError) {
+            console.error('DynamoDB save error (non-fatal):', dbError);
+            // Continue even if DynamoDB save fails
+          }
+        }
         
         return {
           statusCode: 200,
           headers,
           body: JSON.stringify({ 
             success: true, 
-            message: 'Song request received! We\'ll add it soon.' 
+            message: 'Song request received! We\'ll add it soon.',
+            id: songRequest.id
           })
         };
 

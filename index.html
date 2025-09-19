@@ -6,20 +6,20 @@
     <title>Jacob & Sarah - Wedding | March 21, 2026</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Join Jacob Ellis and Sarah Smith as they celebrate their wedding on March 21, 2026, at 38 Delta Crescent, Aberfoyle Park. Garden ceremony under the golden elm tree.">
+    <meta name="description" content="Join Jacob Ellis and Sarah Smith as they celebrate their wedding on March 21, 2026, at 38 Delta Crescent, Aberfoyle Park.">
     <meta name="keywords" content="Jacob Sarah wedding, March 2026 wedding, Aberfoyle Park wedding, garden wedding">
     <meta name="author" content="Jacob Ellis & Sarah Smith">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jacobandsarah2026.com/">
+    <meta property="og:url" content="https://jacobandsarah.wedding/">
     <meta property="og:title" content="Jacob & Sarah - Wedding | March 21, 2026">
-    <meta property="og:description" content="Join us as we say 'I do' under the golden elm tree. Garden wedding celebration with Thai feast and string quartet.">
-    <meta property="og:image" content="https://jacobandsarah2026.com/images/og-image.jpg">
+    <meta property="og:description" content="Join us as we celebrate our wedding on March 21, 2026. Garden wedding celebration with family and friends.">
+    <meta property="og:image" content="https://jacobandsarah.wedding/images/og-image.jpg">
     
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' dy='.3em'%3E💛%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c9a961'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' dy='.3em' fill='white' font-weight='bold'%3EJ%26S%3C/text%3E%3C/svg%3E">
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -29,8 +29,83 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Fonts -->
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/styles/main.css" as="style">
+    <link rel="preload" href="/src/main.ts" as="script" type="module">
+    <link rel="preload" href="/images/elm.png" as="image">
+    
+    <!-- Fonts with font-display swap -->
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,300;6..96,400&family=DM+Serif+Display&family=Lora:wght@400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    
+    <!-- Critical inline styles to prevent layout shift -->
+    <style>
+        /* Prevent layout shifts */
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            overflow-x: hidden;
+        }
+        body {
+            margin: 0;
+            background-color: #fbf8f0;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #2b2929;
+        }
+        /* Tree background placeholder */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: -30%;
+            right: -30%;
+            bottom: -30%;
+            width: 160%;
+            height: 160%;
+            background-color: rgba(251, 248, 240, 0.8);
+            opacity: 0.7;
+            z-index: -1;
+        }
+        .navigation {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-text {
+            text-align: center;
+        }
+        /* Reserve space for text */
+        .names {
+            font-size: clamp(3rem, 10vw, 6rem);
+            min-height: 1.2em;
+        }
+        .wedding-date {
+            font-size: 1.25rem;
+            min-height: 1.5em;
+        }
+        /* Gallery images aspect ratio */
+        .gallery-item {
+            aspect-ratio: 4/3;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
     
     <!-- Styles -->
     <link rel="stylesheet" href="/src/styles/main.css">
@@ -48,7 +123,6 @@
                 <li><a href="#info" class="nav-link">Information</a></li>
                 <li><a href="#rsvp" class="nav-link">RSVP</a></li>
                 <li><a href="#menu" class="nav-link">Menu</a></li>
-                <li><a href="#story" class="nav-link">Our Story</a></li>
                 <li><a href="#spotify" class="nav-link">Playlist</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
             </ul>
@@ -125,40 +199,42 @@
                 <h2 class="section-title fade-in-up draw-line">Good to Know</h2>
                 <div class="info-grid">
                     <div class="info-card rotate-in" data-delay="100">
-                        <h3>Getting There</h3>
+                        <h3><i data-lucide="car" class="pencil-icon"></i>Getting There</h3>
                         <p>We recommend Uber to and from the venue</p>
                         <p>38 Delta Crescent, Aberfoyle Park</p>
                     </div>
                     <div class="info-card rotate-in gift-card" data-delay="600">
-                        <h3>Your Presence is Our Present</h3>
+                        <h3><i data-lucide="gift" class="pencil-icon"></i>No Presents</h3>
                         <p>The best gift we could receive is sharing our day with you. As many of you are travelling a long way, we request no gifts, just your presence.</p>
                     </div>
                     <div class="info-card rotate-in" data-delay="500">
-                        <h3>Dress Code</h3>
+                        <h3><i data-lucide="shirt" class="pencil-icon"></i>Dress Code</h3>
                         <p>Semi-Formal / Cocktail</p>
                         <p>Look sharp, feel comfortable.</p>
                     </div>
 
 
                     <div class="info-card rotate-in" data-delay="300">
-                        <h3>Little Ones Welcome</h3>
+                        <h3><i data-lucide="baby" class="pencil-icon"></i>Little Ones Welcome</h3>
                         <p>This is a family-friendly celebration</p>
                         <p>Children are warmly welcomed</p>
                     </div>
                     <div class="info-card rotate-in" data-delay="400">
-                        <h3>Wedding Day</h3>
+                        <h3><i data-lucide="sun" class="pencil-icon"></i>Wedding Day</h3>
                         <div id="weather-widget" class="weather-widget">Loading forecast…</div>
                     </div>
 
                     <div class="info-card rotate-in" data-delay="200">
-                        <h3>Accommodation</h3>
+                        <h3><i data-lucide="home" class="pencil-icon"></i>Accommodation</h3>
                         <p>We recommend staying in Brighton or Glenelg</p>
                         <p class="accommodation-links">
                             <a href="https://maps.app.goo.gl/1Qa5ykGyQ4nr58nz9" target="_blank" rel="noopener" class="info-link">
-                                <span class="link-icon">📍</span>View Map
+                                <i data-lucide="map-pin" class="link-icon"></i>
+                                View Map
                             </a>
                             <a href="https://www.airbnb.com.au/s/Brighton--SA/homes" target="_blank" rel="noopener" class="info-link">
-                                <span class="link-icon">🏠</span>Browse Stays
+                                <i data-lucide="bed" class="link-icon"></i>
+                                Browse Stays
                             </a>
                         </p>
                         <p class="help-text">Please reach out if you need assistance</p>
@@ -212,19 +288,6 @@
         </div>
     </section>
 
-
-    <!-- Our Story Section -->
-    <section id="story" class="our-story">
-        <div class="container">
-            <h2 class="section-title fade-in-up draw-line">Our Story</h2>
-            <div class="story-content">
-                <p class="fade-in-up">It began with a glance across a dinner table in Thailand—two wandering souls who found home in each other's eyes. By our second day together, the world had shifted. Hours dissolved into heartbeats as we talked through every bus ride, every sunset, every moment we could steal. What started as adventure became something deeper: a love that crossed continents and defied distance.</p>
-                <p class="fade-in-up">When Sarah flew home and I continued on, we discovered that love knows no borders. Every day brought voice calls that lasted hours, messages that bridged oceans, and a certainty that grew stronger with each "goodnight" whispered across time zones. I abandoned my planned route through Southeast Asia—how could I explore the world when my world was waiting in Adelaide?</p>
-                <p class="fade-in-up">Together, we've painted our love story across 35 countries. We've watched sunrise from Machu Picchu (where I dropped to one knee on Sarah's birthday), stolen kisses by Lake Bled, and built dreams in Dublin's rain. Now, with our daughter's heartbeat joining ours and two cats who've claimed our hearts, we're writing our greatest adventure yet—a lifetime of mornings waking up next to each other, of shared laughter, of building a family beneath the same golden elm where we'll say "I do."</p>
-            </div>
-        </div>
-    </section>
-
     <!-- Spotify Playlist Section -->
     <section id="spotify" class="spotify-section">
         <div class="container">
@@ -245,13 +308,13 @@
             <h2 class="section-title fade-in-up draw-line">Gallery</h2>
             <div class="gallery-grid">
                 <div class="gallery-item scale-in" data-delay="100">
-                    <img src="/images/engadge/IMG_3007.JPG" alt="Jacob proposing to Sarah at Machu Picchu" loading="lazy">
+                    <img src="/images/engadge/IMG_3007.JPG" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
                 </div>
                 <div class="gallery-item scale-in" data-delay="200">
-                    <img src="/images/engadge/IMG_5918.jpg" alt="The proposal moment - Jacob presenting the ring to Sarah at Machu Picchu" loading="lazy">
+                    <img src="/images/engadge/IMG_5918.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
                 </div>
                 <div class="gallery-item scale-in" data-delay="400">
-                    <img src="/images/engadge/IMG-20240513-WA0044.jpg" alt="Jacob and Sarah celebrating their engagement with Machu Picchu in the background" loading="lazy">
+                    <img src="/images/engadge/IMG-20240513-WA0044.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
                 </div>
             </div>
         </div>
@@ -269,5 +332,21 @@
 
     <!-- Scripts -->
     <script type="module" src="/src/main.ts"></script>
+    
+    <!-- Initialize Lucide Icons -->
+    <script>
+        // Initialize Lucide icons when ready
+        window.initializeLucideIcons = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+        
+        // Try to initialize on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', window.initializeLucideIcons);
+        
+        // Also try after window load as a fallback
+        window.addEventListener('load', window.initializeLucideIcons);
+    </script>
 </body>
 </html>

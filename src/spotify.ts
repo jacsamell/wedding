@@ -196,8 +196,8 @@ export function initSpotify(): void {
             submitBtn.disabled = true;
             
             try {
-                // Submit song request to API
-                await apiCall(`${API_CONFIG.SPOTIFY_API_URL}/add-song`, {
+                // Submit song request to RSVP API (saves to DynamoDB)
+                await apiCall(`${API_CONFIG.RSVP_API_URL}/song-request`, {
                     method: 'POST',
                     body: JSON.stringify(requestData)
                 });

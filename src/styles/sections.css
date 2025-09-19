@@ -200,9 +200,8 @@
 
 /* Time variant pairs elegantly under the date */
 .wedding-time {
-  font-family: var(--font-elegant);
+  font-family: var(--font-sans);
   font-size: clamp(1.05rem, 2.4vw, 1.6rem);
-  font-weight: 400;
   color: var(--primary-gold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -241,75 +240,6 @@
 }
 
 
-
-/* Story Section */
-.our-story {
-  background: var(--cream);
-  position: relative;
-  overflow: hidden;
-}
-
-.our-story::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(201, 169, 97, 0.05) 0%, transparent 70%);
-  animation: gentleRotate 30s linear infinite;
-}
-
-@keyframes gentleRotate {
-  to { transform: rotate(360deg); }
-}
-
-.story-content {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.story-content p {
-  font-size: 1.1875rem;
-  line-height: 2;
-  color: var(--text-dark);
-  margin-bottom: var(--spacing-xl);
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  position: relative;
-}
-
-.story-content p:first-child {
-  font-size: 1.25rem;
-}
-
-.story-content p:first-child::before {
-  content: '"';
-  position: absolute;
-  left: -2rem;
-  top: -0.5rem;
-  font-size: 4rem;
-  font-family: var(--font-elegant);
-  color: var(--primary-gold);
-  opacity: 0.3;
-}
-
-.story-content p:last-child {
-  margin-bottom: 0;
-}
-
-.story-content p:last-child::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 1px;
-  background: var(--primary-gold);
-  margin: var(--spacing-xl) auto 0;
-  opacity: 0.6;
-}
 
 /* Event Details */
 .event-details {
@@ -513,6 +443,7 @@
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
+  margin-right: 8px;
 }
 
 .attendance-toggle {
@@ -1053,7 +984,7 @@
   .guest-row {
     flex-direction: column;
     gap: var(--spacing-sm);
-    padding: 1rem;
+    padding: var(--spacing-lg);
   }
   
   .guest-info {
@@ -1126,9 +1057,32 @@
   margin-top: var(--spacing-2xl);
 }
 
+.info-card {
+  position: relative;
+}
+
 .info-card h3 {
   color: var(--primary-gold);
   margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.pencil-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--primary-gold);
+  opacity: 0.85;
+  transition: all 0.3s ease;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+.info-card:hover .pencil-icon {
+  transform: translateY(-2px) rotate(3deg);
+  opacity: 1;
+  stroke-width: 1.8;
 }
 
 .info-card p {
@@ -1166,7 +1120,17 @@
 }
 
 .link-icon {
-  font-size: 1.2em;
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+  stroke-width: 1.5;
+}
+
+.info-link:hover .link-icon {
+  transform: rotate(-5deg);
+  stroke-width: 2;
 }
 
 .help-text {
@@ -1245,15 +1209,7 @@
 /* Spotify Section */
 .spotify-section {
   padding: var(--spacing-3xl) 0;
-  background: 
-    linear-gradient(180deg, rgba(251, 248, 240, 0.9) 0%, rgba(245, 237, 224, 0.95) 100%),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 50px,
-      rgba(201, 169, 97, 0.03) 50px,
-      rgba(201, 169, 97, 0.03) 51px
-    );
+  background: var(--cream);
   position: relative;
   overflow: hidden;
   opacity: 0;
@@ -1853,8 +1809,18 @@
     }
     
     .info-card {
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: var(--spacing-md);
+        margin-right: var(--spacing-md);
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+    
+    .info-card h3 {
+        gap: var(--spacing-sm);
+    }
+    
+    .pencil-icon {
+        width: 2rem;
+        height: 2rem;
     }
     
     /* Navigation */
@@ -1864,12 +1830,10 @@
     
     .brand-text {
         font-size: 1.25rem;
-        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
     .nav-countdown {
         font-size: 0.7rem;
-        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
     /* General Button Sizing for Touch */
@@ -2099,7 +2063,7 @@
     }
     
     .guest-row {
-        padding: var(--spacing-md);
+        padding: var(--spacing-lg);
         gap: var(--spacing-sm);
     }
     
@@ -2131,18 +2095,18 @@
     
     /* Details Cards */
     .detail-card {
-        padding: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-xl);
         margin-bottom: var(--spacing-md);
-        margin-left: var(--spacing-sm);
-        margin-right: var(--spacing-sm);
+        margin-left: var(--spacing-md);
+        margin-right: var(--spacing-md);
     }
     
     /* Menu Items */
     .menu-category {
-        padding: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-xl);
         margin-bottom: var(--spacing-md);
-        margin-left: var(--spacing-sm);
-        margin-right: var(--spacing-sm);
+        margin-left: var(--spacing-md);
+        margin-right: var(--spacing-md);
     }
 }
 
@@ -2168,7 +2132,7 @@
     }
     
     .guest-row {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-md) var(--spacing-lg);
     }
     
     /* Ensure adequate spacing between interactive elements */
@@ -2184,16 +2148,21 @@
     
     .detail-card,
     .menu-category {
-        margin-left: var(--spacing-md);
-        margin-right: var(--spacing-md);
-        padding: var(--spacing-xl);
+        margin-left: var(--spacing-lg);
+        margin-right: var(--spacing-lg);
+        padding: var(--spacing-xl) var(--spacing-2xl);
     }
     
     .info-card {
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: var(--spacing-lg);
+        margin-right: var(--spacing-lg);
         margin-bottom: var(--spacing-md);
-        padding: var(--spacing-xl);
+        padding: var(--spacing-xl) var(--spacing-2xl);
+    }
+    
+    .pencil-icon {
+        width: 1.75rem;
+        height: 1.75rem;
     }
     
     .time-box {

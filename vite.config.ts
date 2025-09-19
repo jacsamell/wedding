@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import type { Plugin } from 'vite';
-import { searchSpotifyTracks } from './server/spotify-api';
+// import { searchSpotifyTracks } from './server/spotify-api';
 
 // Custom plugin to handle API requests during development
 function devApiPlugin(): Plugin {
@@ -16,9 +16,9 @@ function devApiPlugin(): Plugin {
           req.on('end', async () => {
             try {
               const { query } = JSON.parse(body);
-              const tracks = await searchSpotifyTracks(query);
+              // const tracks = await searchSpotifyTracks(query);
               res.setHeader('Content-Type', 'application/json');
-              res.end(JSON.stringify({ tracks }));
+              res.end(JSON.stringify({ tracks: [] }));
             } catch (error) {
               console.error('Spotify search error:', error);
               res.statusCode = 500;
@@ -80,6 +80,11 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
       },
+      output: {
+        manualChunks: {
+          'vendor': ['gsap'],
+        },
+      },
     },
     minify: 'terser',
     terserOptions: {
@@ -88,6 +93,14 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    // Better asset inlining for small images
+    assetsInlineLimit: 10240, // 10kb
+    // Generate source maps for debugging
+    sourcemap: false,
+    // CSS code splitting
+    cssCodeSplit: true,
+    // Better chunk size warnings
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     port: 3000,
@@ -96,6 +109,10 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.js',
   },
+  define: {
+    'import.meta.env.VITE_RSVP_API_URL': JSON.stringify('https://ltx3ea4eingenuxwlcovcexllq0xqreu.lambda-url.us-west-2.on.aws'),
+    'import.meta.env.VITE_SPOTIFY_API_URL': JSON.stringify('https://avdmfrn3iea4an7tabn27pntdq0uslsu.lambda-url.us-west-2.on.aws')
+  }
 });
 
 
