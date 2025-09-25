@@ -28,10 +28,8 @@ exports.handler = async (event) => {
             };
         }
         
-        // Handle RSVP routes
-        if (path === '/rsvp' && method === 'POST') {
-            return await createRsvp(event);
-        } else if (path === '/guests' && method === 'POST') {
+        // Handle routes
+        if (path === '/guests' && method === 'POST') {
             return await saveGuest(event);
         } else if (path === '/song-request' && method === 'POST') {
             return await handleSongRequest(event);
@@ -96,80 +94,6 @@ async function saveGuest(event) {
                 success: true,
                 message: 'Guest saved successfully',
                 id: guestId 
-            })
-        };
-    } catch (error) {
-        console.error('DynamoDB error:', error);
-        throw error;
-    }
-}
-
-async function createRsvp(event) {
-    const body = JSON.parse(event.body || '{}');
-    
-    // Validate required fields - expecting guests array
-    if (!body.guests || !Array.isArray(body.guests) || body.guests.length === 0) {
-        return {
-            statusCode: 400,
-            headers,
-            body: JSON.stringify({ message: 'Guests array is required' })
-        };
-    }
-    
-    const submissionId = uuidv4();
-    const timestamp = new Date().toISOString();
-    const sourceIp = event.requestContext?.http?.sourceIp || 'unknown';
-    
-    // Create one row per guest
-    const guestRecords = body.guests.map((guest, index) => ({
-        id: uuidv4(),
-        submissionId: submissionId,
-        name: guest.name || 'Unknown',
-        dietary: guest.dietary || '',
-        attending: guest.attending !== false, // default to true
-        guestNumber: index + 1,
-        totalGuestsInSubmission: body.guests.length,
-        createdAt: timestamp,
-        sourceIp: sourceIp,
-        type: 'guest' // single guest record
-    }));
-    
-    // Log RSVP submission
-    console.log('RSVP Submission:', {
-        submissionId: submissionId,
-        guestCount: guestRecords.length,
-        attendingCount: guestRecords.filter(g => g.attending).length,
-        primaryGuest: guestRecords[0]?.name || 'Unknown',
-        allGuests: guestRecords.map(g => ({
-            name: g.name,
-            attending: g.attending,
-            dietary: g.dietary
-        })),
-        timestamp: timestamp,
-        sourceIp: sourceIp
-    });
-    
-    try {
-        // Batch write all guest records
-        const putRequests = guestRecords.map(guest => ({
-            PutRequest: {
-                Item: guest
-            }
-        }));
-        
-        await dynamodb.batchWrite({
-            RequestItems: {
-                [TABLE_NAME]: putRequests
-            }
-        }).promise();
-        
-        return {
-            statusCode: 201,
-            headers,
-            body: JSON.stringify({
-                id: submissionId,
-                guests: guestRecords,
-                message: 'RSVP saved successfully'
             })
         };
     } catch (error) {
