@@ -5,7 +5,8 @@
   "main": "spotify-handler.js",
   "dependencies": {
     "spotify-web-api-node": "^5.0.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "aws-sdk": "^2.1048.0"
   }
 }
 
