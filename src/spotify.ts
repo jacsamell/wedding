@@ -213,17 +213,17 @@ export function initSpotify(): void {
                 `;
                 messageDiv.classList.add('show');
                 
-                // Reset form
+                // Reset form and return to search screen immediately
                 songRequestForm.reset();
+                songRequestForm.style.display = 'none';
+                songSearchContainer.style.display = 'block';
+                searchInput.value = '';
+                searchResults.innerHTML = '';
                 
-                // Return to search screen after 2 seconds
+                // Hide success message after 3 seconds
                 setTimeout(() => {
                     messageDiv.classList.remove('show');
-                    songRequestForm.style.display = 'none';
-                    songSearchContainer.style.display = 'block';
-                    searchInput.value = '';
-                    searchResults.innerHTML = '';
-                }, 2000);
+                }, 3000);
                 
             } catch (error) {
                 console.error('Error submitting song request:', error);
