@@ -89,7 +89,7 @@ export function initSpotify(): void {
             
             const data = await apiCall(`${API_CONFIG.SPOTIFY_API_URL}/search`, {
                 method: 'POST',
-                body: JSON.stringify({ query })
+                body: JSON.stringify({ action: 'search', query })
             });
             
             if (data.tracks && data.tracks.length > 0) {
