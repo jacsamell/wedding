@@ -18,6 +18,36 @@ export function initRSVP(): void {
     let nextId = 1;
     const guests = new Map<number, GuestData>();
 
+    // Load existing guests for this IP
+    async function loadExistingGuests() {
+        try {
+            const response = await fetch(`${API_CONFIG.RSVP_API_URL}/guests`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.guests && data.guests.length > 0) {
+                    console.log('Loading existing guests:', data.guests);
+                    
+                    // Clear any default guests
+                    guestContainer.innerHTML = '';
+                    guests.clear();
+                    
+                    // Add loaded guests
+                    data.guests.forEach((guest: GuestData) => {
+                        if (guest.id >= nextId) {
+                            nextId = guest.id + 1;
+                        }
+                        addGuest(guest);
+                    });
+                    
+                    return true; // Guests were loaded
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load existing guests:', error);
+        }
+        return false; // No guests loaded
+    }
+
     function createGuestCard(data?: Partial<GuestData>): HTMLElement {
         const id = data?.id || nextId++;
         const name = data?.name ?? '';
@@ -275,10 +305,15 @@ export function initRSVP(): void {
         addGuest();
     });
 
-    // Initialize with one default guest (not attending)
+    // Load existing guests or initialize with one default guest
     const existing = guestContainer.querySelectorAll('.guest-card').length;
     if (existing === 0) {
-        addGuest();
+        loadExistingGuests().then((loaded) => {
+            // Only add default guest if none were loaded
+            if (!loaded && guestContainer.querySelectorAll('.guest-card').length === 0) {
+                addGuest();
+            }
+        });
     }
 }
 

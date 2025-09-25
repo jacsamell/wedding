@@ -19,6 +19,8 @@ exports.handler = async (event) => {
         // Handle routes
         if (path === '/guests' && method === 'POST') {
             return await saveGuest(event);
+        } else if (path === '/guests' && method === 'GET') {
+            return await getGuestsByIp(event);
         } else if (path === '/song-request' && method === 'POST') {
             return await handleSongRequest(event);
         } else {
@@ -50,9 +52,9 @@ async function saveGuest(event) {
         };
     }
     
-    const guestId = body.id ? String(body.id) : uuidv4();
-    const timestamp = body.timestamp || new Date().toISOString();
     const sourceIp = event.requestContext?.http?.sourceIp || 'unknown';
+    const guestId = body.id ? `${sourceIp}_${body.id}` : `${sourceIp}_${uuidv4()}`;
+    const timestamp = body.timestamp || new Date().toISOString();
     
     // Create individual guest record
     const guestRecord = {
@@ -87,6 +89,60 @@ async function saveGuest(event) {
     } catch (error) {
         console.error('DynamoDB error:', error);
         throw error;
+    }
+}
+
+async function getGuestsByIp(event) {
+    const sourceIp = event.requestContext?.http?.sourceIp || 'unknown';
+    
+    console.log('Fetching guests for IP:', sourceIp);
+    
+    try {
+        // Query by sourceIp attribute directly
+        const result = await dynamodb.scan({
+            TableName: TABLE_NAME,
+            FilterExpression: 'sourceIp = :ip AND #type = :type',
+            ExpressionAttributeNames: {
+                '#type': 'type'
+            },
+            ExpressionAttributeValues: {
+                ':ip': sourceIp,
+                ':type': 'guest'
+            }
+        }).promise();
+        
+        console.log(`Found ${result.Items.length} guests for IP ${sourceIp}`);
+        
+        // Transform back to frontend format
+        const guests = result.Items.map(item => {
+            // Extract row ID from composite ID (IP_rowId)
+            const parts = item.id.split('_');
+            const rowId = parts[1] || '1';
+            
+            return {
+                id: isNaN(parseInt(rowId)) ? 1 : parseInt(rowId),
+                name: item.name,
+                dietary: item.dietary || '',
+                attending: item.attending !== false,
+                saved: true
+            };
+        });
+        
+        // Sort by ID to maintain order
+        guests.sort((a, b) => a.id - b.id);
+        
+        return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({ guests })
+        };
+    } catch (error) {
+        console.error('Error fetching guests:', error);
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ message: 'Failed to fetch guests' })
+        };
     }
 }
 
