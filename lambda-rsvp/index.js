@@ -31,6 +31,8 @@ exports.handler = async (event) => {
         // Handle RSVP routes
         if (path === '/rsvp' && method === 'POST') {
             return await createRsvp(event);
+        } else if (path === '/guests' && method === 'POST') {
+            return await saveGuest(event);
         } else if (path === '/song-request' && method === 'POST') {
             return await handleSongRequest(event);
         } else {
@@ -49,6 +51,58 @@ exports.handler = async (event) => {
         };
     }
 };
+
+async function saveGuest(event) {
+    const body = JSON.parse(event.body || '{}');
+    
+    // Validate required fields
+    if (!body.name) {
+        return {
+            statusCode: 400,
+            headers,
+            body: JSON.stringify({ message: 'Guest name is required' })
+        };
+    }
+    
+    const guestId = body.id || uuidv4();
+    const timestamp = body.timestamp || new Date().toISOString();
+    const sourceIp = event.requestContext?.http?.sourceIp || 'unknown';
+    
+    // Create individual guest record
+    const guestRecord = {
+        id: guestId,
+        type: 'guest',
+        name: body.name,
+        dietary: body.dietary || '',
+        attending: body.attending !== false, // default to true
+        createdAt: timestamp,
+        sourceIp: sourceIp
+    };
+    
+    console.log('Saving guest:', guestRecord);
+    
+    try {
+        await dynamodb.put({
+            TableName: TABLE_NAME,
+            Item: guestRecord
+        }).promise();
+        
+        console.log('Guest saved successfully:', guestId);
+        
+        return {
+            statusCode: 201,
+            headers,
+            body: JSON.stringify({ 
+                success: true,
+                message: 'Guest saved successfully',
+                id: guestId 
+            })
+        };
+    } catch (error) {
+        console.error('DynamoDB error:', error);
+        throw error;
+    }
+}
 
 async function createRsvp(event) {
     const body = JSON.parse(event.body || '{}');
