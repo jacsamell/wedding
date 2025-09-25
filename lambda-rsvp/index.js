@@ -6,10 +6,7 @@ const TABLE_NAME = process.env.DYNAMODB_TABLE;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
 const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': CORS_ORIGIN,
-    'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+    'Content-Type': 'application/json'
 };
 
 exports.handler = async (event) => {
@@ -19,15 +16,6 @@ exports.handler = async (event) => {
     const path = event.rawPath;
     
     try {
-        // Handle CORS preflight
-        if (method === 'OPTIONS') {
-            return {
-                statusCode: 200,
-                headers,
-                body: ''
-            };
-        }
-        
         // Handle routes
         if (path === '/guests' && method === 'POST') {
             return await saveGuest(event);

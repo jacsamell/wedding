@@ -30,20 +30,13 @@ async function refreshAccessToken() {
 
 exports.handler = async (event) => {
   const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': CORS_ORIGIN,
-    'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    'Content-Type': 'application/json'
   };
 
   console.log('Event:', JSON.stringify(event, null, 2));
   
   const method = event.requestContext.http.method;
   const path = event.rawPath;
-
-  if (method === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
 
   try {
     await refreshAccessToken();
