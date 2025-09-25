@@ -62,7 +62,7 @@ async function saveGuest(event) {
         };
     }
     
-    const guestId = body.id || uuidv4();
+    const guestId = body.id ? String(body.id) : uuidv4();
     const timestamp = body.timestamp || new Date().toISOString();
     const sourceIp = event.requestContext?.http?.sourceIp || 'unknown';
     
