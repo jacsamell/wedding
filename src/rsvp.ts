@@ -20,12 +20,38 @@ export function initRSVP(): void {
 
     // Load existing guests for this IP
     async function loadExistingGuests() {
+        // Add loading spinner to the container
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'loading-guests';
+        loadingSpinner.innerHTML = `
+            <div class="loading-spinner"></div>
+            <p>Loading your saved guests...</p>
+        `;
+        loadingSpinner.style.cssText = `
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        `;
+        
+        // Insert loading spinner after first guest card
+        const firstCard = guestContainer.querySelector('.guest-card');
+        if (firstCard && firstCard.nextSibling) {
+            guestContainer.insertBefore(loadingSpinner, firstCard.nextSibling);
+        } else {
+            guestContainer.appendChild(loadingSpinner);
+        }
+        
         try {
             const response = await fetch(`${API_CONFIG.RSVP_API_URL}/guests`);
             if (response.ok) {
                 const data = await response.json();
                 if (data.guests && data.guests.length > 0) {
                     console.log('Loading existing guests:', data.guests);
+                    
+                    // Remove loading spinner
+                    loadingSpinner.remove();
                     
                     // Clear any default guests
                     guestContainer.innerHTML = '';
@@ -45,6 +71,9 @@ export function initRSVP(): void {
         } catch (error) {
             console.error('Failed to load existing guests:', error);
         }
+        
+        // Remove loading spinner on error or no guests
+        loadingSpinner.remove();
         return false; // No guests loaded
     }
 
@@ -305,14 +334,16 @@ export function initRSVP(): void {
         addGuest();
     });
 
-    // Load existing guests or initialize with one default guest
+    // Always start with at least one guest card immediately
     const existing = guestContainer.querySelectorAll('.guest-card').length;
     if (existing === 0) {
-        loadExistingGuests().then((loaded) => {
-            // Only add default guest if none were loaded
-            if (!loaded && guestContainer.querySelectorAll('.guest-card').length === 0) {
-                addGuest();
-            }
+        // Add a default guest card immediately for better UX
+        addGuest();
+        
+        // Then try to load existing guests
+        loadExistingGuests().then(() => {
+            // If guests were loaded, they replaced the default card
+            // If no guests were loaded, keep the default card
         });
     }
 }
