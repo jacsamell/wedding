@@ -250,7 +250,13 @@
 .details-bg {
   position: absolute;
   inset: 0;
-  background: url('/images/pres.png') center/cover;
+  background-image: image-set(
+    url('/images/pres.webp') type('image/webp'),
+    url('/images/pres.png') type('image/png')
+  );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   opacity: 0.1;
   filter: blur(2px);
 }
@@ -1178,7 +1184,13 @@
   transform: translateY(-50%);
   width: 400px;
   height: 400px;
-  background: url('/images/pres.png') center/contain no-repeat;
+  background-image: image-set(
+    url('/images/pres.webp') type('image/webp'),
+    url('/images/pres.png') type('image/png')
+  );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   opacity: 0.3;
   filter: sepia(0.2) hue-rotate(10deg) brightness(1.4) contrast(1.2);
   z-index: 0;

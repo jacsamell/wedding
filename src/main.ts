@@ -12,6 +12,7 @@ import { initSpotify } from './spotify';
 
 class WeddingApp {
     private cleanupFunctions: Array<() => void> = [];
+    private webpSupport?: boolean;
 
     constructor() {
         this.init();
@@ -91,7 +92,15 @@ class WeddingApp {
     }
 
     private preloadAssets(): void {
-        const criticalImages = [
+        const supportsWebP = this.supportsWebP();
+        const criticalImages = supportsWebP ? [
+            'images/elm.webp',
+            'images/pres.webp',
+            'images/engadge/IMG_3007.webp',
+            'images/engadge/IMG_5918.webp',
+            'images/engadge/IMG-20240513-WA0042.webp',
+            'images/engadge/IMG-20240513-WA0044.webp'
+        ] : [
             'images/elm.png',
             'images/pres.png',
             'images/engadge/IMG_3007.JPG',
@@ -99,11 +108,30 @@ class WeddingApp {
             'images/engadge/IMG-20240513-WA0042.jpg',
             'images/engadge/IMG-20240513-WA0044.jpg'
         ];
-        
+
         criticalImages.forEach(src => {
             const img = new Image();
             img.src = src;
         });
+    }
+
+    private supportsWebP(): boolean {
+        if (typeof this.webpSupport === 'boolean') {
+            return this.webpSupport;
+        }
+
+        try {
+            const canvas = document.createElement('canvas');
+            if (canvas.getContext && canvas.getContext('2d')) {
+                this.webpSupport = canvas.toDataURL('image/webp').startsWith('data:image/webp');
+            } else {
+                this.webpSupport = false;
+            }
+        } catch {
+            this.webpSupport = false;
+        }
+
+        return this.webpSupport;
     }
 
     private logPerformance(): void {

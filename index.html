@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jacob & Sarah - Wedding | March 21, 2026</title>
+    <link rel="canonical" href="https://jacobandsarah.wedding/">
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Join Jacob Ellis and Sarah Smith as they celebrate their wedding on March 21, 2026, at 38 Delta Crescent, Aberfoyle Park.">
+    <meta name="description" content="Celebrate Jacob Ellis and Sarah Smith tying the knot on March 21, 2026 at 38 Delta Crescent, Aberfoyle Park.">
     <meta name="keywords" content="Jacob Sarah wedding, March 2026 wedding, Aberfoyle Park wedding, garden wedding">
     <meta name="author" content="Jacob Ellis & Sarah Smith">
+    <meta name="application-name" content="Jacob & Sarah's Wedding">
+    <meta name="apple-mobile-web-app-title" content="Jacob & Sarah">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jacobandsarah.wedding/">
+    <meta property="og:site_name" content="Jacob & Sarah's Wedding">
+    <meta property="og:locale" content="en_AU">
     <meta property="og:title" content="Jacob & Sarah - Wedding | March 21, 2026">
-    <meta property="og:description" content="Join us as we celebrate our wedding on March 21, 2026. Garden wedding celebration with family and friends.">
-    <meta property="og:image" content="https://jacobandsarah.wedding/images/og-image.jpg">
-    
-    
+    <meta property="og:description" content="Join us beneath the golden elm tree for a garden celebration, Thai feast and dancing under the stars.">
+    <meta property="og:image" content="https://jacobandsarah.wedding/images/pres-original.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1536">
+    <meta property="og:image:height" content="1024">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jacob & Sarah - Wedding | March 21, 2026">
+    <meta name="twitter:description" content="Celebrate with Jacob and Sarah in Aberfoyle Park on March 21, 2026.">
+    <meta name="twitter:image" content="https://jacobandsarah.wedding/images/pres-original.png">
+    <meta name="twitter:image:alt" content="Jacob and Sarah's wedding invitation illustration">
+    <meta name="twitter:url" content="https://jacobandsarah.wedding/">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c9a961'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' dy='.3em' fill='white' font-weight='bold'%3EJ%26S%3C/text%3E%3C/svg%3E">
     
@@ -32,6 +47,7 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="/src/styles/main.css" as="style">
     <link rel="preload" href="/src/main.ts" as="script" type="module">
+    <link rel="preload" href="/images/elm.webp" as="image" type="image/webp">
     <link rel="preload" href="/images/elm.png" as="image">
     
     <!-- Fonts with font-display swap -->
@@ -100,15 +116,56 @@
         .gallery-item {
             aspect-ratio: 4/3;
         }
+        .gallery-item picture,
         .gallery-item img {
             width: 100%;
             height: 100%;
+            display: block;
+        }
+        .gallery-item img {
             object-fit: cover;
         }
     </style>
     
     <!-- Styles -->
     <link rel="stylesheet" href="/src/styles/main.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WeddingEvent",
+            "name": "Jacob & Sarah's Wedding",
+            "startDate": "2026-03-21T16:00:00+10:30",
+            "endDate": "2026-03-22T00:00:00+10:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "url": "https://jacobandsarah.wedding/",
+            "image": "https://jacobandsarah.wedding/images/pres-original.png",
+            "description": "Celebrate Jacob Ellis and Sarah Smith tying the knot beneath the golden elm tree in Aberfoyle Park.",
+            "location": {
+                "@type": "Place",
+                "name": "Ellis Family Home",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "38 Delta Crescent",
+                    "addressLocality": "Aberfoyle Park",
+                    "addressRegion": "SA",
+                    "postalCode": "5159",
+                    "addressCountry": "AU"
+                }
+            },
+            "organizer": {
+                "@type": "Person",
+                "name": "Jacob Ellis",
+                "email": "rsvp@jacobandsarah.wedding"
+            },
+            "performer": {
+                "@type": "MusicGroup",
+                "name": "String quartet and curated Spotify playlist"
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -308,13 +365,22 @@
             <h2 class="section-title fade-in-up draw-line">Gallery</h2>
             <div class="gallery-grid">
                 <div class="gallery-item scale-in" data-delay="100">
-                    <img src="/images/engadge/IMG_3007.JPG" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
+                    <picture>
+                        <source srcset="/images/engadge/IMG_3007.webp" type="image/webp">
+                        <img src="/images/engadge/IMG_3007.JPG" alt="Jacob and Sarah engagement photo" loading="lazy" width="900" height="1600">
+                    </picture>
                 </div>
                 <div class="gallery-item scale-in" data-delay="200">
-                    <img src="/images/engadge/IMG_5918.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
+                    <picture>
+                        <source srcset="/images/engadge/IMG_5918.webp" type="image/webp">
+                        <img src="/images/engadge/IMG_5918.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1420" height="1600">
+                    </picture>
                 </div>
                 <div class="gallery-item scale-in" data-delay="400">
-                    <img src="/images/engadge/IMG-20240513-WA0044.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="900">
+                    <picture>
+                        <source srcset="/images/engadge/IMG-20240513-WA0044.webp" type="image/webp">
+                        <img src="/images/engadge/IMG-20240513-WA0044.jpg" alt="Jacob and Sarah engagement photo" loading="lazy" width="1200" height="1600">
+                    </picture>
                 </div>
             </div>
         </div>

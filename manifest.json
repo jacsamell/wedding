@@ -1,11 +1,13 @@
 {
-    "name": "Jacob & Sarah Wedding",
-    "short_name": "J&S Wedding",
-    "description": "Join Jacob and Sarah as they celebrate their wedding on March 22, 2026",
+    "name": "Jacob & Sarah's Wedding",
+    "short_name": "Jacob & Sarah",
+    "description": "Join Jacob and Sarah for their wedding celebration on March 21, 2026 in Aberfoyle Park, South Australia.",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
     "background_color": "#fbf8f0",
     "theme_color": "#c9a961",
+    "lang": "en-AU",
     "orientation": "portrait",
     "icons": [
         {

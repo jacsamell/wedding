@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "tsc --noEmit && eslint src/**/*.ts",
-    "clean": "rm -rf dist node_modules/.vite"
+    "clean": "rm -rf dist node_modules/.vite",
+    "optimize-images": "node scripts/optimize-images.mjs"
   },
   "keywords": [
     "wedding",
@@ -32,6 +33,7 @@
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^12.0.1",
+    "sharp": "^0.33.5",
     "terser": "^5.24.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"

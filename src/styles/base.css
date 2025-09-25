@@ -35,7 +35,11 @@ body::before {
   left: -30%;
   right: -30%;
   bottom: -30%;
-  background: url('/images/elm.png') center top/contain no-repeat;
+  background-image: image-set(
+    url('/images/elm.webp') type('image/webp'),
+    url('/images/elm.png') type('image/png')
+  );
+  background-repeat: no-repeat;
   background-size: 90%;
   background-position: center 40%;
   opacity: calc(0.7 * var(--tree-breath-opacity, 1));
