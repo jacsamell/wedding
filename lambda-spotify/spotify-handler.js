@@ -16,14 +16,14 @@ const spotifyApi = new SpotifyWebApi({
 // Refresh token for your account (keeps you logged in)
 const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
 
-async function refreshAccessToken() {
+async function getAccessToken() {
   try {
-    spotifyApi.setRefreshToken(refreshToken);
-    const data = await spotifyApi.refreshAccessToken();
+    // Use client credentials flow which doesn't require user authentication
+    const data = await spotifyApi.clientCredentialsGrant();
     spotifyApi.setAccessToken(data.body['access_token']);
     return data.body['access_token'];
   } catch (error) {
-    console.error('Error refreshing access token:', error);
+    console.error('Error getting access token:', error);
     throw error;
   }
 }
@@ -39,7 +39,7 @@ exports.handler = async (event) => {
   const path = event.rawPath;
 
   try {
-    await refreshAccessToken();
+    await getAccessToken();
     const body = JSON.parse(event.body || '{}');
     const { action } = body;
 
