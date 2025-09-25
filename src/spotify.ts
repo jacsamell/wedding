@@ -216,10 +216,14 @@ export function initSpotify(): void {
                 // Reset form
                 songRequestForm.reset();
                 
-                // Hide message after 5 seconds
+                // Return to search screen after 2 seconds
                 setTimeout(() => {
                     messageDiv.classList.remove('show');
-                }, 5000);
+                    songRequestForm.style.display = 'none';
+                    songSearchContainer.style.display = 'block';
+                    searchInput.value = '';
+                    searchResults.innerHTML = '';
+                }, 2000);
                 
             } catch (error) {
                 console.error('Error submitting song request:', error);
