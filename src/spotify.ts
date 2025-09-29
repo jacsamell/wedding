@@ -77,10 +77,14 @@ export function initSpotify(): void {
     
     let searchTimeout: NodeJS.Timeout;
     
+    // Store search results in memory to avoid JSON parsing issues with long names
+    let currentSearchResults: any[] = [];
+    
     // Search function
     async function searchSongs(query: string) {
         if (!query.trim()) {
             searchResults.innerHTML = '';
+            currentSearchResults = [];
             return;
         }
         
@@ -93,8 +97,10 @@ export function initSpotify(): void {
             });
             
             if (data.tracks && data.tracks.length > 0) {
-                searchResults.innerHTML = data.tracks.map((track: any) => `
-                    <div class="search-result-item" data-track='${JSON.stringify(track)}'>
+                currentSearchResults = data.tracks; // Store tracks in memory
+                
+                searchResults.innerHTML = data.tracks.map((track: any, index: number) => `
+                    <div class="search-result-item" data-track-index="${index}">
                         <div class="track-info">
                             ${track.image ? `<img src="${track.image}" alt="${track.name}" class="track-image">` : ''}
                             <div class="track-details">
@@ -108,18 +114,21 @@ export function initSpotify(): void {
                 `).join('');
                 
                 // Add click handlers to results
-                searchResults.querySelectorAll('.search-result-item').forEach(item => {
-                    item.addEventListener('click', function(this: HTMLElement) {
-                        const trackData = JSON.parse(this.getAttribute('data-track') || '{}');
-                        selectTrack(trackData);
+                searchResults.querySelectorAll('.search-result-item').forEach((item, index) => {
+                    item.addEventListener('click', function() {
+                        if (currentSearchResults[index]) {
+                            selectTrack(currentSearchResults[index]);
+                        }
                     });
                 });
             } else {
                 searchResults.innerHTML = '<div class="no-results">No songs found. Try a different search.</div>';
+                currentSearchResults = [];
             }
         } catch (error) {
             console.error('Search error:', error);
             searchResults.innerHTML = '<div class="search-error">Search failed. Please try again.</div>';
+            currentSearchResults = [];
         }
     }
     
@@ -165,6 +174,7 @@ export function initSpotify(): void {
             songRequestForm.reset();
             searchInput.value = '';
             searchResults.innerHTML = '';
+            currentSearchResults = [];
         });
     }
     
@@ -219,6 +229,7 @@ export function initSpotify(): void {
                 songSearchContainer.style.display = 'block';
                 searchInput.value = '';
                 searchResults.innerHTML = '';
+                currentSearchResults = [];
                 
                 // Hide success message after 3 seconds
                 setTimeout(() => {
