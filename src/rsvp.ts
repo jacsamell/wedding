@@ -17,6 +17,18 @@ export function initRSVP(): void {
     const guestContainer = guestList as HTMLElement;
     let nextId = 1;
     const guests = new Map<number, GuestData>();
+    const saveTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+    function triggerSaveWithDebounce(id: number, saveBtn: HTMLButtonElement | null) {
+        if (saveTimers.has(id)) {
+            clearTimeout(saveTimers.get(id));
+        }
+        const timer = setTimeout(() => {
+            saveTimers.delete(id);
+            saveBtn?.click();
+        }, 2000);
+        saveTimers.set(id, timer);
+    }
 
     // Load existing guests for this IP
     async function loadExistingGuests() {
@@ -226,9 +238,11 @@ export function initRSVP(): void {
                     setTimeout(() => card.classList.remove('declining'), 800);
                 }
             }
+            
+            triggerSaveWithDebounce(id, saveBtn);
         });
 
-        // Input change listeners to reset save state
+        // Input change listeners to reset save state and auto-save
         [nameInput, dietaryInput].forEach(input => {
             input?.addEventListener('input', () => {
                 const guestData = guests.get(id);
@@ -237,6 +251,7 @@ export function initRSVP(): void {
                     saveBtn?.classList.remove('saved');
                     card.classList.remove('saved-success');
                 }
+                triggerSaveWithDebounce(id, saveBtn);
             });
         });
 
